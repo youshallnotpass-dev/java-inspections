@@ -1,0 +1,25 @@
+package com.iwillfailyou.inspection;
+
+import org.cactoos.collection.Filtered;
+import org.cactoos.list.ListOf;
+
+import java.util.List;
+
+public class ExcludeSuppressed<T extends Violation> implements Violations<T> {
+
+    private final Violations<T> origin;
+
+    public ExcludeSuppressed(final Violations<T> origin) {
+        this.origin = origin;
+    }
+
+    @Override
+    public List<T> asList() throws InspectionException {
+        return new ListOf<>(
+            new Filtered<>(
+                valuation -> !valuation.isSuppressed(),
+                origin.asList()
+            )
+        );
+    }
+}

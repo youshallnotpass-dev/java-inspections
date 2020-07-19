@@ -1,0 +1,12 @@
+plugins {
+    id 'com.iwillfailyou' version '0.0.5'
+}
+
+allprojects {
+    ext {
+        group = 'com.iwillfailyou'
+    }
+    repositories {
+        mavenCentral()
+    }
+}

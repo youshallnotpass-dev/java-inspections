@@ -1,0 +1,2 @@
+rootProject.name = 'java-inspections'
+include 'lib'

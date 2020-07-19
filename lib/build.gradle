@@ -1,0 +1,164 @@
+plugins {
+    id 'java-library'
+    id 'jacoco'
+    id 'com.jfrog.bintray' version '1.8.4'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    implementation 'com.iwillfailyou:java-plugin:0.0.3'
+    implementation 'org.cactoos:cactoos:0.41'
+    implementation 'com.github.javaparser:javaparser-symbol-solver-core:3.13.6'
+    implementation 'org.apache.httpcomponents:httpclient:4.5.8'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+jacoco {
+    toolVersion = "0.8.5"
+}
+jacocoTestReport {
+    reports {
+        xml.enabled = true
+        html.enabled = false
+    }
+}
+
+check.dependsOn jacocoTestReport
+
+if (project.rootProject.file('local.properties').exists()) {
+    ext {
+        bintrayName = 'java-inspections'
+        artifact = 'java-inspections'
+        libraryName = 'java-inspections'
+
+        libraryDescription = 'Java inspections library for iwillfailyou'
+
+        bintrayRepo = 'java'
+        publishedGroupId = 'com.iwillfailyou'
+
+        siteUrl = 'https://github.com/iwillfailyou/java-inspections'
+        gitUrl = 'https://github.com/iwillfailyou/java-inspections.git'
+
+        libraryVersion = '0.0.1'
+
+        developerId = 'nikialeksey'
+        developerName = 'Alexey Nikitin'
+        developerEmail = 'nikialeksey@gmail.com'
+        licenseName = 'MIT License'
+        licenseUrl = 'https://github.com/iwillfailyou/java-inspections/blob/master/LICENSE'
+        allLicenses = ['MIT']
+    }
+    Properties properties = new Properties()
+    properties.load(
+            project.rootProject.file('local.properties').newDataInputStream()
+    )
+
+    apply plugin: 'maven'
+    apply plugin: 'com.jfrog.bintray'
+    apply plugin: 'maven-publish'
+
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        classifier = 'javadoc'
+        from javadoc.destinationDir
+    }
+
+    publishing {
+        publications {
+            lib(MavenPublication) {
+                artifact(javadocJar)
+                artifact(sourcesJar)
+                artifact("$buildDir/libs/lib-${libraryVersion}.jar")
+
+                groupId publishedGroupId
+                artifactId artifact
+                version libraryVersion
+
+                pom {
+                    name = libraryName
+                    description = libraryDescription
+
+                    url = siteUrl
+
+                    licenses {
+                        license {
+                            name = licenseName
+                            url = licenseUrl
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = developerId
+                            name = developerName
+                            email = developerEmail
+                        }
+                    }
+                    scm {
+                        connection = gitUrl
+                        developerConnection = gitUrl
+                        url = siteUrl
+                    }
+                }
+
+                pom.withXml {
+                    def dependenciesNode = asNode().appendNode('dependencies')
+                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', 'org.cactoos')
+                    dependencyNode.appendNode('artifactId', 'cactoos')
+                    dependencyNode.appendNode('version', '0.41')
+
+                    dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', 'com.github.javaparser')
+                    dependencyNode.appendNode('artifactId', 'javaparser-symbol-solver-core')
+                    dependencyNode.appendNode('version', '3.13.6')
+
+                    dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', 'com.iwillfailyou')
+                    dependencyNode.appendNode('artifactId', 'java-plugin')
+                    dependencyNode.appendNode('version', '0.0.3')
+
+                    dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', 'org.apache.httpcomponents')
+                    dependencyNode.appendNode('artifactId', 'httpclient')
+                    dependencyNode.appendNode('version', '4.5.8')
+                }
+            }
+        }
+    }
+    version = libraryVersion
+    bintray {
+        user = properties.getProperty("bintray.user")
+        key = properties.getProperty("bintray.apikey")
+        publications = ['lib']
+
+        pkg {
+            userOrg = 'iwillfailyou'
+            repo = bintrayRepo
+            name = bintrayName
+            desc = libraryDescription
+            websiteUrl = siteUrl
+            vcsUrl = gitUrl
+            licenses = allLicenses
+            publish = true
+            publicDownloadNumbers = true
+            version {
+                desc = libraryDescription
+                gpg {
+                    sign = true
+                    passphrase = properties.getProperty("bintray.gpg.password")
+                }
+                mavenCentralSync {
+                    sync = true
+                    user = properties.getProperty("bintray.sonatype.user")
+                    password = properties.getProperty("bintray.sonatype.pass")
+                }
+            }
+        }
+    }
+}
