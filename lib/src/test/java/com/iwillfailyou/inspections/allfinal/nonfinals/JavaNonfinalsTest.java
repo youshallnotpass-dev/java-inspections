@@ -121,4 +121,33 @@ public class JavaNonfinalsTest {
             IsEqual.equalTo(true)
         );
     }
+
+    @Test
+    public void nonFinalParameterInInterface() throws Exception {
+        final List<Nonfinal> nonfinals = new JavaNonfinals(
+            "interface A {\n",
+            "    void a(int b);\n",
+            "}"
+        ).asList();
+        Assert.assertThat(nonfinals.size(), IsEqual.equalTo(1));
+        Assert.assertThat(
+            nonfinals.get(0).isInterfaceMethodParam(),
+            IsEqual.equalTo(true)
+        );
+    }
+
+    @Test
+    public void nonFinalClassInInterface() throws Exception {
+        final List<Nonfinal> nonfinals = new JavaNonfinals(
+            "interface A {\n",
+            "    void a(final int b);\n",
+            "    class B {} \n",
+            "}"
+        ).asList();
+        Assert.assertThat(nonfinals.size(), IsEqual.equalTo(1));
+        Assert.assertThat(
+            nonfinals.get(0).isInterfaceMethodParam(),
+            IsEqual.equalTo(false)
+        );
+    }
 }
