@@ -135,7 +135,7 @@ public final class JavaNonfinals implements Violations<Nonfinal> {
 
                     final List<ClassOrInterfaceDeclaration> types = unit.findAll(ClassOrInterfaceDeclaration.class);
                     for (final ClassOrInterfaceDeclaration type : types) {
-                        if (!type.isInterface() && !type.isFinal()) {
+                        if (!type.isInterface() && !type.isFinal() && !type.isAbstract()) {
                             result.add(new JavaNonfinal(type, root));
                         }
                     }
