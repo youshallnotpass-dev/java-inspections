@@ -5,7 +5,7 @@ import org.cactoos.list.ListOf;
 
 import java.util.List;
 
-public class ExcludeSuppressed<T extends Violation> implements Violations<T> {
+public final class ExcludeSuppressed<T extends Violation> implements Violations<T> {
 
     private final Violations<T> origin;
 
@@ -17,7 +17,7 @@ public class ExcludeSuppressed<T extends Violation> implements Violations<T> {
     public List<T> asList() throws InspectionException {
         return new ListOf<>(
             new Filtered<>(
-                valuation -> !valuation.isSuppressed(),
+                (final T valuation) -> !valuation.isSuppressed(),
                 origin.asList()
             )
         );

@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-public class ExcludeInterfaceMethodParamsTest {
+public final class ExcludeInterfaceMethodParamsTest {
 
     @Test
     public void withoutInterfaceMethodParams() throws Exception {

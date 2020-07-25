@@ -3,7 +3,7 @@ package com.iwillfailyou.inspection;
 import org.cactoos.Scalar;
 import org.cactoos.scalar.Checked;
 
-public class InspectionScalar<T> implements Scalar<T> {
+public final class InspectionScalar<T> implements Scalar<T> {
 
     private final Scalar<T> origin;
 

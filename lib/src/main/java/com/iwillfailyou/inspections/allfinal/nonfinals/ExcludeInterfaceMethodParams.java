@@ -8,7 +8,7 @@ import org.cactoos.list.ListOf;
 
 import java.util.List;
 
-public class ExcludeInterfaceMethodParams implements Violations<Nonfinal> {
+public final class ExcludeInterfaceMethodParams implements Violations<Nonfinal> {
 
     private final Violations<Nonfinal> origin;
 
@@ -20,7 +20,7 @@ public class ExcludeInterfaceMethodParams implements Violations<Nonfinal> {
     public List<Nonfinal> asList() throws InspectionException {
         return new ListOf<>(
             new Filtered<>(
-                valuation -> !valuation.isInterfaceMethodParam(),
+                (final Nonfinal valuation) -> !valuation.isInterfaceMethodParam(),
                 origin.asList()
             )
         );

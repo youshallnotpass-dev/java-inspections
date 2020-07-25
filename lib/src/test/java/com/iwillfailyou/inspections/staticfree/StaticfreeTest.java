@@ -11,7 +11,7 @@ import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
 
-public class StaticfreeTest {
+public final class StaticfreeTest {
 
     @Rule
     public final TemporaryFolder tmp = new TemporaryFolder();
@@ -39,7 +39,7 @@ public class StaticfreeTest {
         try {
             failures.failIfRed();
             Assert.fail("Must fail!");
-        } catch (Exception e) {
+        } catch (final Exception e) {
             // green
         }
     }
@@ -80,7 +80,7 @@ public class StaticfreeTest {
         try {
             failures.failIfRed();
             //green
-        } catch (Exception e) {
+        } catch (final Exception e) {
             Assert.fail("Must not fail!");
         }
     }
@@ -121,7 +121,7 @@ public class StaticfreeTest {
         try {
             failures.failIfRed();
             Assert.fail("Must fail!");
-        } catch (Exception e) {
+        } catch (final Exception e) {
             // green
         }
     }

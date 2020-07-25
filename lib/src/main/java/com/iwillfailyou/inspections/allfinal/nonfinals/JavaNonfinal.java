@@ -6,14 +6,13 @@ import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.VariableDeclarationExpr;
-import com.github.javaparser.ast.nodeTypes.modifiers.NodeWithFinalModifier;
 import com.iwillfailyou.javaparser.Item;
 import com.iwillfailyou.javaparser.NodeDescription;
 import com.iwillfailyou.javaparser.NodeItem;
 
 import java.util.Optional;
 
-public class JavaNonfinal implements Nonfinal {
+public final class JavaNonfinal implements Nonfinal {
 
     private final Node expr;
     private final Item item;
@@ -67,7 +66,7 @@ public class JavaNonfinal implements Nonfinal {
         if (expr instanceof Parameter) {
             final Optional<ClassOrInterfaceDeclaration> parentType = expr.findFirst(
                 Node.TreeTraversal.PARENTS,
-                node -> {
+                (final Node node) -> {
                     final Optional<ClassOrInterfaceDeclaration> result;
                     if (node instanceof ClassOrInterfaceDeclaration) {
                         result = Optional.of((ClassOrInterfaceDeclaration) node);

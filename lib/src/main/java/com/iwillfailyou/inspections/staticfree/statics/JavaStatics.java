@@ -12,6 +12,7 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.iwillfailyou.inspection.InspectionException;
 import com.iwillfailyou.inspection.InspectionScalar;
+import com.iwillfailyou.inspection.JavaViolations;
 import com.iwillfailyou.inspection.SimpleViolations;
 import com.iwillfailyou.inspection.Violations;
 
@@ -24,9 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class JavaStatics implements Violations<Static> {
+public final class JavaStatics implements Violations<Static> {
 
-    private final InspectionScalar<Violations<Static>> statics;
+    private final Violations<Static> statics;
 
     public JavaStatics(final String... lines) {
         this(ParserConfiguration.LanguageLevel.RAW, lines);
@@ -109,95 +110,47 @@ public class JavaStatics implements Violations<Static> {
         final String descriptor
     ) {
         this(
-            new InspectionScalar<>(() -> {
-                try (final InputStream stream = source.value()) {
+            new JavaViolations<>(
+                source,
+                parser,
+                descriptor,
+                (final CompilationUnit unit, final TypeDeclaration<?> root) -> {
                     final List<Static> result = new ArrayList<>();
-                    final ParseResult<CompilationUnit> parsed = parser.parse(stream);
-                    if (parsed.isSuccessful()) {
-                        final Optional<CompilationUnit> optionalUnit = parsed.getResult();
-                        if (optionalUnit.isPresent()) {
-                            final CompilationUnit unit = optionalUnit.get();
-                            final Optional<TypeDeclaration> root = unit.findFirst(
-                                TypeDeclaration.class
-                            );
-
-                            if (root.isPresent()) {
-                                final List<FieldDeclaration> fields = unit.findAll(FieldDeclaration.class);
-                                for (FieldDeclaration field : fields) {
-                                    final boolean isStatic = field.getModifiers()
-                                        .stream()
-                                        .map(Modifier::getKeyword)
-                                        .anyMatch(keyword -> keyword == Modifier.Keyword.STATIC);
-                                    if (isStatic) {
-                                        result.add(new JavaStatic(field, root.get()));
-                                    }
-                                }
-
-                                final List<MethodDeclaration> methods = unit.findAll(MethodDeclaration.class);
-                                for (MethodDeclaration method : methods) {
-                                    final boolean isStatic = method.getModifiers()
-                                        .stream()
-                                        .map(Modifier::getKeyword)
-                                        .anyMatch(keyword -> keyword == Modifier.Keyword.STATIC);
-                                    if (isStatic) {
-                                        result.add(new JavaStatic(method, root.get()));
-                                    }
-                                }
-
-                                final List<TypeDeclaration> types = unit.findAll(TypeDeclaration.class);
-                                for (TypeDeclaration<?> type : types) {
-                                    final boolean isStatic = type.getModifiers()
-                                        .stream()
-                                        .map(Modifier::getKeyword)
-                                        .anyMatch(keyword -> keyword == Modifier.Keyword.STATIC);
-                                    if (isStatic) {
-                                        result.add(new JavaStatic(type, root.get()));
-                                    }
-                                }
-                            }
+                    final List<FieldDeclaration> fields = unit.findAll(FieldDeclaration.class);
+                    for (final FieldDeclaration field : fields) {
+                        final boolean isStatic = field.isStatic();
+                        if (isStatic) {
+                            result.add(new JavaStatic(field, root));
                         }
-                    } else {
-                        final StringBuilder problems = new StringBuilder();
-                        for (final Problem problem : parsed.getProblems()) {
-                            problems.append(problem.toString());
-                            problems.append("\n");
-                        }
-                        throw new InspectionException(
-                            String.format(
-                                "Can not count statics in: '%s'. \nPlease, fix java " +
-                                    "syntax errors: \n%s",
-                                descriptor,
-                                problems.toString()
-                            )
-                        );
                     }
-                    return new SimpleViolations<>(result);
-                } catch (final IOException e) {
-                    throw new InspectionException(
-                        String.format(
-                            "Can not count statics in: '%s'.", descriptor
-                        ),
-                        e
-                    );
-                } catch (ParseProblemException e) {
-                    throw new InspectionException(
-                        String.format(
-                            "Can not count statics in: '%s'. \nPlease, fix java " +
-                                "syntax errors and try again.", descriptor
-                        ),
-                        e
-                    );
+
+                    final List<MethodDeclaration> methods = unit.findAll(MethodDeclaration.class);
+                    for (final MethodDeclaration method : methods) {
+                        final boolean isStatic = method.isStatic();
+                        if (isStatic) {
+                            result.add(new JavaStatic(method, root));
+                        }
+                    }
+
+                    final List<TypeDeclaration> types = unit.findAll(TypeDeclaration.class);
+                    for (final TypeDeclaration<?> type : types) {
+                        final boolean isStatic = type.isStatic();
+                        if (isStatic) {
+                            result.add(new JavaStatic(type, root));
+                        }
+                    }
+                    return result;
                 }
-            })
+            )
         );
     }
 
-    public JavaStatics(final InspectionScalar<Violations<Static>> statics) {
+    public JavaStatics(final Violations<Static> statics) {
         this.statics = statics;
     }
 
     @Override
     public List<Static> asList() throws InspectionException {
-        return statics.value().asList();
+        return statics.asList();
     }
 }

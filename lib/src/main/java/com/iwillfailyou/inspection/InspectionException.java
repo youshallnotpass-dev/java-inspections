@@ -1,11 +1,11 @@
 package com.iwillfailyou.inspection;
 
-public class InspectionException extends Exception {
-    public InspectionException(String message) {
+public final class InspectionException extends Exception {
+    public InspectionException(final String message) {
         super(message);
     }
 
-    public InspectionException(String message, Throwable cause) {
+    public InspectionException(final String message, final Throwable cause) {
         super(message, cause);
     }
 

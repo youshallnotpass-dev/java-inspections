@@ -7,7 +7,7 @@ import org.cactoos.list.ListOf;
 
 import java.util.List;
 
-public class ExcludeComparisions implements Violations<Null> {
+public final class ExcludeComparisions implements Violations<Null> {
 
     private final Violations<Null> origin;
 
@@ -19,7 +19,7 @@ public class ExcludeComparisions implements Violations<Null> {
     public List<Null> asList() throws InspectionException {
         return new ListOf<>(
             new Filtered<>(
-                valuation -> !valuation.isInComparision(),
+                (final Null valuation) -> !valuation.isInComparision(),
                 origin.asList()
             )
         );

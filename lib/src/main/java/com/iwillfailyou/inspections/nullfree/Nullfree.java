@@ -19,7 +19,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Nullfree implements Inspection {
+public final class Nullfree implements Inspection {
 
     private final SourceMask sourceMask;
     private final boolean skipComparisions;
@@ -57,12 +57,12 @@ public class Nullfree implements Inspection {
     }
 
     @Override
-    public void accept(File file) throws IwfyException {
+    public void accept(final File file) throws IwfyException {
         final Path path = file.toPath();
         if (sourceMask.matches(path)) {
             try {
                 this.nulls.addAll(new JavaNulls(path.toFile()).asList());
-            } catch (InspectionException e) {
+            } catch (final InspectionException e) {
                 throw new IwfyException(
                     "Could not get the nulls.",
                     e

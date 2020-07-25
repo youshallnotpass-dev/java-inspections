@@ -8,7 +8,7 @@ import com.iwillfailyou.plugin.Ui;
 
 import java.net.URL;
 
-public class InspectionFailures<T extends Violation> implements Failures {
+public final class InspectionFailures<T extends Violation> implements Failures {
 
     private final Violations<T> nulls;
     private final Badge badge;
@@ -25,7 +25,7 @@ public class InspectionFailures<T extends Violation> implements Failures {
     public void failIfRed() throws IwfyException {
         try {
             badge.failIfRed();
-        } catch (InspectionException e) {
+        } catch (final InspectionException e) {
             throw new IwfyException("Inspection failed. ", e);
         }
     }
@@ -36,7 +36,7 @@ public class InspectionFailures<T extends Violation> implements Failures {
             for (final T violation : nulls.asList()) {
                 ui.println(violation.description());
             }
-        } catch (InspectionException e) {
+        } catch (final InspectionException e) {
             throw new IwfyException("Could not show the violations.", e);
         }
     }
@@ -45,7 +45,7 @@ public class InspectionFailures<T extends Violation> implements Failures {
     public void publish(final URL url) throws IwfyException {
         try {
             badge.send(url);
-        } catch (InspectionException e) {
+        } catch (final InspectionException e) {
             throw new IwfyException(
                 "Could not publish the violations.",
                 e
