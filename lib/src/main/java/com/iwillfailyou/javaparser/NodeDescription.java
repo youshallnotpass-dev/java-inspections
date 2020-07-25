@@ -3,8 +3,10 @@ package com.iwillfailyou.javaparser;
 import com.github.javaparser.Range;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.expr.MarkerAnnotationExpr;
 import org.cactoos.scalar.Unchecked;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 public final class NodeDescription implements Description {
@@ -22,11 +24,7 @@ public final class NodeDescription implements Description {
             new Unchecked<>(() -> {
                 final Optional<Node> parentNode = node.getParentNode();
                 final Node cause;
-                if (parentNode.isPresent()) {
-                    cause = parentNode.get();
-                } else {
-                    cause = node;
-                }
+                cause = parentNode.orElse(node);
                 return cause;
             }),
             root
@@ -59,7 +57,12 @@ public final class NodeDescription implements Description {
     public String asString() {
         final StringBuilder description = new StringBuilder();
         description.append(new NodePath(node).asString());
-        final Optional<Range> range = node.getRange();
+        final Optional<Range> range = node.getChildNodes()
+            .stream()
+            .filter(aNode -> !(aNode instanceof MarkerAnnotationExpr))
+            .findFirst()
+            .map(Node::getRange)
+            .orElse(node.getRange());
         if (range.isPresent()) {
             description.append('(');
             description.append(root.getNameAsString());
@@ -69,12 +72,11 @@ public final class NodeDescription implements Description {
         }
         description.append(" > ");
         final String causeRepr = cause.value().toString();
-        final int firstBreakIndex = causeRepr.indexOf('\n');
-        if (firstBreakIndex != -1) { // many strings in cause representation
-            description.append(causeRepr, 0, firstBreakIndex);
-        } else {
-            description.append(causeRepr);
-        }
+        description.append(Arrays.stream(causeRepr.split("\n"))
+            .filter(line -> !line.startsWith("@"))
+            .findFirst()
+            .orElse(causeRepr));
+
         return description.toString();
     }
 }
