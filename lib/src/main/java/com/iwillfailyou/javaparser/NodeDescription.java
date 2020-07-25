@@ -59,7 +59,7 @@ public final class NodeDescription implements Description {
         description.append(new NodePath(node).asString());
         final Optional<Range> range = node.getChildNodes()
             .stream()
-            .filter(aNode -> !(aNode instanceof MarkerAnnotationExpr))
+            .filter((final Node aNode) -> !(aNode instanceof MarkerAnnotationExpr))
             .findFirst()
             .map(Node::getRange)
             .orElse(node.getRange());
@@ -73,7 +73,7 @@ public final class NodeDescription implements Description {
         description.append(" > ");
         final String causeRepr = cause.value().toString();
         description.append(Arrays.stream(causeRepr.split("\n"))
-            .filter(line -> !line.startsWith("@"))
+            .filter((final String line) -> !line.startsWith("@"))
             .findFirst()
             .orElse(causeRepr));
 
