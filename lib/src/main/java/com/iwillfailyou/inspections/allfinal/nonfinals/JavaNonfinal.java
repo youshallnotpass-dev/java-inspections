@@ -5,6 +5,7 @@ import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.expr.LambdaExpr;
 import com.github.javaparser.ast.expr.VariableDeclarationExpr;
 import com.iwillfailyou.javaparser.Item;
 import com.iwillfailyou.javaparser.NodeDescription;
@@ -81,5 +82,20 @@ public final class JavaNonfinal implements Nonfinal {
             interfaceMethodParam = false;
         }
         return interfaceMethodParam;
+    }
+
+    @Override
+    public boolean isLambdaParam() {
+        final boolean lambdaParam;
+        if (expr instanceof Parameter) {
+            lambdaParam = expr.getParentNode()
+                .filter(
+                    (final Node node) -> node instanceof LambdaExpr
+                )
+                .isPresent();
+        } else {
+            lambdaParam = false;
+        }
+        return lambdaParam;
     }
 }
