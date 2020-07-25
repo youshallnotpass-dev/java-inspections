@@ -50,7 +50,7 @@ public final class Allpublic implements Inspection {
 
     @Override
     public String name() {
-        return "privatefree";
+        return "allpublic";
     }
 
     @Override
