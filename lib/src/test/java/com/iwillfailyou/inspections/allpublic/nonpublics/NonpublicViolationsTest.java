@@ -81,4 +81,24 @@ public final class NonpublicViolationsTest {
         );
     }
 
+    @Test
+    public void interfaceMethod() throws Exception {
+        final List<Nonpublic> nonpublics = new JavaViolations<>(
+            new JavaParser(
+                new ParserConfiguration().setLanguageLevel(
+                    ParserConfiguration.LanguageLevel.RAW
+                )
+            ),
+            new NonpublicViolations(),
+            "interface A {\n",
+            "    void a();\n",
+            "}"
+        ).asList();
+
+        Assert.assertThat(
+            nonpublics.size(),
+            IsEqual.equalTo(0)
+        );
+    }
+
 }
