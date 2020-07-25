@@ -4,11 +4,12 @@ import org.hamcrest.core.IsEqual;
 import org.junit.Assert;
 import org.junit.Test;
 
-public final class ExcludeComparisionsTest {
+public final class ExcludeComparisonsTest {
+
     @Test
-    public void asdasd() throws Exception {
+    public void nullComparisonIsIgnored() throws Exception {
         Assert.assertThat(
-            new ExcludeComparisions(
+            new ExcludeComparisons(
                 new JavaNulls(
                     "class A {\n",
                     "    void method() {\n",
