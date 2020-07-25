@@ -102,7 +102,7 @@ public final class NodeDescriptionTest {
                 "   @Annotation1\n" +
                 "   @Annotation2\n" +
                 "   @Annotation3\n" +
-                "   private static void method() {}\n" +
+                "   private static String a = null;\n" +
                 "}"
         );
         final CompilationUnit unit = result.getResult().get();
@@ -110,14 +110,14 @@ public final class NodeDescriptionTest {
             TypeDeclaration.class
         );
         final TypeDeclaration<?> typeDeclaration = rootOpt.get();
-        final Optional<MethodDeclaration> methodOpt = unit.findFirst(
-            MethodDeclaration.class
+        final Optional<FieldDeclaration> fieldOpt = unit.findFirst(
+            FieldDeclaration.class
         );
-        final MethodDeclaration method = methodOpt.get();
+        final FieldDeclaration field = fieldOpt.get();
 
         Assert.assertThat(
-            new NodeDescription(method, method, typeDeclaration).asString(),
-            IsEqual.equalTo("A.method(A.java:5) > private static void method() {")
+            new NodeDescription(field, field, typeDeclaration).asString(),
+            IsEqual.equalTo("A(A.java:5) > private static String a = null;")
         );
     }
 }
