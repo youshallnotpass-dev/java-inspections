@@ -1,14 +1,17 @@
-package com.iwillfailyou.inspections.staticfree;
+package com.iwillfailyou.inspections.allpublic;
 
+import com.github.javaparser.JavaParser;
+import com.github.javaparser.ParserConfiguration;
 import com.iwillfailyou.inspection.ExcludeSuppressed;
 import com.iwillfailyou.inspection.InspectionException;
 import com.iwillfailyou.inspection.InspectionFailures;
+import com.iwillfailyou.inspection.JavaViolations;
 import com.iwillfailyou.inspection.SimpleViolations;
 import com.iwillfailyou.inspection.Violations;
 import com.iwillfailyou.inspection.badge.IwfyBadge;
 import com.iwillfailyou.inspection.sources.SourceMask;
-import com.iwillfailyou.inspections.staticfree.statics.Static;
-import com.iwillfailyou.inspections.staticfree.statics.JavaStatics;
+import com.iwillfailyou.inspections.allpublic.nonpublics.Nonpublic;
+import com.iwillfailyou.inspections.allpublic.nonpublics.NonpublicViolations;
 import com.iwillfailyou.plugin.Failures;
 import com.iwillfailyou.plugin.Inspection;
 import com.iwillfailyou.plugin.IwfyException;
@@ -18,13 +21,13 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class Staticfree implements Inspection {
+public final class Allpublic implements Inspection {
 
     private final SourceMask sourceMask;
     private final int threshold;
-    private final List<Static> statics;
+    private final List<Nonpublic> nonpublics;
 
-    public Staticfree(
+    public Allpublic(
         final SourceMask sourceMask,
         final int threshold
     ) {
@@ -35,19 +38,19 @@ public final class Staticfree implements Inspection {
         );
     }
 
-    public Staticfree(
+    public Allpublic(
         final SourceMask sourceMask,
         final int threshold,
-        final List<Static> statics
+        final List<Nonpublic> nonpublics
     ) {
         this.sourceMask = sourceMask;
         this.threshold = threshold;
-        this.statics = statics;
+        this.nonpublics = nonpublics;
     }
 
     @Override
     public String name() {
-        return "staticfree";
+        return "privatefree";
     }
 
     @Override
@@ -55,10 +58,20 @@ public final class Staticfree implements Inspection {
         final Path path = file.toPath();
         if (sourceMask.matches(path)) {
             try {
-                this.statics.addAll(new JavaStatics(path.toFile()).asList());
+                this.nonpublics.addAll(
+                    new JavaViolations<>(
+                        new JavaParser(
+                            new ParserConfiguration().setLanguageLevel(
+                                ParserConfiguration.LanguageLevel.RAW
+                            )
+                        ),
+                        new NonpublicViolations(),
+                        path.toFile()
+                    ).asList()
+                );
             } catch (final InspectionException e) {
                 throw new IwfyException(
-                    "Could not get the statics.",
+                    "Could not get the non public methods.",
                     e
                 );
             }
@@ -67,12 +80,12 @@ public final class Staticfree implements Inspection {
 
     @Override
     public Failures failures() {
-        final Violations<Static> statics = new ExcludeSuppressed<>(
-            new SimpleViolations<>(this.statics)
+        final Violations<Nonpublic> nonpublics = new ExcludeSuppressed<>(
+            new SimpleViolations<>(this.nonpublics)
         );
         return new InspectionFailures<>(
-            statics,
-            new IwfyBadge(statics, threshold)
+            nonpublics,
+            new IwfyBadge(nonpublics, threshold)
         );
     }
 }

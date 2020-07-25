@@ -14,7 +14,7 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.util.List;
 
-public class JavaSourceFileTest {
+public final class JavaSourceFileTest {
 
     @Rule
     public final TemporaryFolder folder = new TemporaryFolder();
@@ -129,7 +129,7 @@ public class JavaSourceFileTest {
             ).asList();
         } catch (final InspectionException e) {
             // green
-        } catch (Throwable e) {
+        } catch (final Throwable e) {
             Assert.fail();
         }
     }
@@ -146,7 +146,7 @@ public class JavaSourceFileTest {
             new JavaStatics(source).asList();
         } catch (final InspectionException e) {
             Assert.assertThat(e.getMessage(), StringContains.containsString("Main.java"));
-        } catch (Throwable e) {
+        } catch (final Throwable e) {
             Assert.fail();
         }
     }

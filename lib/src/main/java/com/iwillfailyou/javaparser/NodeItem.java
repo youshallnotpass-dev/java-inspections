@@ -24,7 +24,7 @@ public final class NodeItem implements Item {
             origin,
             description,
             new UncheckedBiFunc<>(
-                (node, name) -> {
+                (final Node node, final String name) -> {
                     final List<Boolean> result = Arrays.asList(false);
                     if (node instanceof NodeWithAnnotations) {
                         final NodeWithAnnotations<?> declaration = (NodeWithAnnotations<?>) node;
@@ -32,7 +32,11 @@ public final class NodeItem implements Item {
                         if (declaration.isAnnotationPresent("SuppressWarnings")) {
                             final Optional<AnnotationExpr> suppressAnnotation = node.findFirst(
                                 AnnotationExpr.class,
-                                expr -> "SuppressWarnings".equals(expr.getNameAsString())
+                                (final AnnotationExpr expr) -> {
+                                    return "SuppressWarnings".equals(
+                                        expr.getNameAsString()
+                                    );
+                                }
                             );
                             if (suppressAnnotation.isPresent()) {
                                 final List<StringLiteralExpr> values = suppressAnnotation.get().findAll(
@@ -75,7 +79,7 @@ public final class NodeItem implements Item {
         if (currentSuppressed) {
             result.set(0, true);
         } else {
-            node.walk(Node.TreeTraversal.PARENTS, node -> {
+            node.walk(Node.TreeTraversal.PARENTS, (final Node node) -> {
                 final boolean suppressed = this.isSuppressed.apply(node, name);
                 if (suppressed) {
                     result.set(0, true);

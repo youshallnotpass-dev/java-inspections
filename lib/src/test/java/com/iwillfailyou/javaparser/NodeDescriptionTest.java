@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import java.util.Optional;
 
-public class NodeDescriptionTest {
+public final class NodeDescriptionTest {
 
     @Test
     public void nullDescription() throws Exception {

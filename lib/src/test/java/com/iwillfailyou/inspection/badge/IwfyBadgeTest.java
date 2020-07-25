@@ -5,7 +5,7 @@ import com.iwillfailyou.inspections.nullfree.nulls.JavaNulls;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class IwfyBadgeTest {
+public final class IwfyBadgeTest {
     @Test
     public void failThreshold() {
         try {
@@ -22,7 +22,7 @@ public class IwfyBadgeTest {
                 2
             ).failIfRed();
             Assert.fail();
-        } catch (InspectionException e) {
+        } catch (final InspectionException e) {
             // green
         }
     }

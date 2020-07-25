@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-public class JavaNull implements Null {
+public final class JavaNull implements Null {
 
     private final NullLiteralExpr expr;
     private final Item item;

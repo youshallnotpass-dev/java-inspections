@@ -17,7 +17,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IwfyBadge implements Badge {
+public final class IwfyBadge implements Badge {
 
     private final Violations<? extends Violation> violations;
     private final int threshold;
@@ -61,12 +61,12 @@ public class IwfyBadge implements Badge {
                 )
             );
             httpClient.execute(saveBadgeInfo).close();
-        } catch (ClientProtocolException e) {
+        } catch (final ClientProtocolException e) {
             throw new InspectionException(
                 "Static service error when sending badge info.",
                 e
             );
-        } catch (URISyntaxException | IOException e) {
+        } catch (final URISyntaxException | IOException e) {
             throw new InspectionException("Can not send the badge request.", e);
         }
     }

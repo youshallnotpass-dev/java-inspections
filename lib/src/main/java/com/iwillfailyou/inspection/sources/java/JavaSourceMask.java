@@ -6,7 +6,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.PathMatcher;
 
-public class JavaSourceMask implements SourceMask {
+public final class JavaSourceMask implements SourceMask {
 
     private final PathMatcher matcher;
 
@@ -14,7 +14,7 @@ public class JavaSourceMask implements SourceMask {
         this(FileSystems.getDefault().getPathMatcher("glob:**/*.java"));
     }
 
-    private JavaSourceMask(PathMatcher matcher) {
+    private JavaSourceMask(final PathMatcher matcher) {
         this.matcher = matcher;
     }
 

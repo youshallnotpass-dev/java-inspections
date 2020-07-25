@@ -8,7 +8,7 @@ import com.iwillfailyou.javaparser.Item;
 import com.iwillfailyou.javaparser.NodeDescription;
 import com.iwillfailyou.javaparser.NodeItem;
 
-public class JavaStatic implements Static {
+public final class JavaStatic implements Static {
 
     private final Item item;
 

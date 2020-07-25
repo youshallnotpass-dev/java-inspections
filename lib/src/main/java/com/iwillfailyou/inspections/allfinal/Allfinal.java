@@ -19,7 +19,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Allfinal implements Inspection {
+public final class Allfinal implements Inspection {
 
     private final SourceMask sourceMask;
     private final int threshold;
@@ -62,7 +62,7 @@ public class Allfinal implements Inspection {
         if (sourceMask.matches(path)) {
             try {
                 this.nonfinals.addAll(new JavaNonfinals(path.toFile()).asList());
-            } catch (InspectionException e) {
+            } catch (final InspectionException e) {
                 throw new IwfyException(
                     "Could not get the nulls.",
                     e

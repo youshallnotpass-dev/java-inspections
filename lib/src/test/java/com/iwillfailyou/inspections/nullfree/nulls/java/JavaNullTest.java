@@ -6,7 +6,7 @@ import org.hamcrest.core.StringContains;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class JavaNullTest {
+public final class JavaNullTest {
 
     @Test
     public void description() throws Exception {

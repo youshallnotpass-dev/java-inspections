@@ -4,7 +4,7 @@ import org.hamcrest.core.IsEqual;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class ExcludeComparisionsTest {
+public final class ExcludeComparisionsTest {
     @Test
     public void asdasd() throws Exception {
         Assert.assertThat(

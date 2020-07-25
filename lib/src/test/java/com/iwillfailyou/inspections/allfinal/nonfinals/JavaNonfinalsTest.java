@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-public class JavaNonfinalsTest {
+public final class JavaNonfinalsTest {
     @Test
     public void nonFinalClass() throws Exception {
         final List<Nonfinal> nonfinals = new JavaNonfinals(

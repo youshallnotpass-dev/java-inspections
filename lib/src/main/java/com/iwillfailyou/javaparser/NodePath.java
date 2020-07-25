@@ -39,7 +39,7 @@ public final class NodePath implements Path {
                 path.insert(0, pkg.get().getNameAsString());
             }
         }
-        node.walk(Node.TreeTraversal.PARENTS, node -> {
+        node.walk(Node.TreeTraversal.PARENTS, (final Node node) -> {
             if (node instanceof TypeDeclaration) {
                 path.insert(0, ((TypeDeclaration<?>) node).getNameAsString());
                 path.insert(0, '$');

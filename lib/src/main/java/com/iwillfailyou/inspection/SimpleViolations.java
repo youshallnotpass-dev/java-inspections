@@ -2,7 +2,7 @@ package com.iwillfailyou.inspection;
 
 import java.util.List;
 
-public class SimpleViolations<T extends Violation> implements Violations<T> {
+public final class SimpleViolations<T extends Violation> implements Violations<T> {
 
     private final List<T> aViolations;
 

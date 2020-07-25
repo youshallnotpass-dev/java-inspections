@@ -6,7 +6,7 @@ import org.hamcrest.core.StringContains;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class JavaStaticTest {
+public final class JavaStaticTest {
     @Test
     public void description() throws Exception {
         final Static aStatic = new JavaStatics(
