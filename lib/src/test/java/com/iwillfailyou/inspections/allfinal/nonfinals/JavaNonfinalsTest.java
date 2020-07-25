@@ -166,4 +166,14 @@ public final class JavaNonfinalsTest {
             IsEqual.equalTo(true)
         );
     }
+
+    @Test
+    public void abstractClass() throws Exception {
+        final List<Nonfinal> nonfinals = new JavaNonfinals(
+            "abstract class A {\n",
+            "    abstract void a(final int b);\n",
+            "}"
+        ).asList();
+        Assert.assertThat(nonfinals.isEmpty(), IsEqual.equalTo(true));
+    }
 }
