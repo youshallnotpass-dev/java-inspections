@@ -150,4 +150,20 @@ public final class JavaNonfinalsTest {
             IsEqual.equalTo(false)
         );
     }
+
+    @Test
+    public void nonFinalLambdaParam() throws Exception {
+        final List<Nonfinal> nonfinals = new JavaNonfinals(
+            "final class A {\n",
+            "    void a() {\n",
+            "        final Func a = b -> {};\n",
+            "    }\n",
+            "}"
+        ).asList();
+        Assert.assertThat(nonfinals.size(), IsEqual.equalTo(1));
+        Assert.assertThat(
+            nonfinals.get(0).isLambdaParam(),
+            IsEqual.equalTo(true)
+        );
+    }
 }
