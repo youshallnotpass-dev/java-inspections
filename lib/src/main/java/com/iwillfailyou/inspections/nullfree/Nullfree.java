@@ -7,9 +7,9 @@ import com.iwillfailyou.inspection.SimpleViolations;
 import com.iwillfailyou.inspection.Violations;
 import com.iwillfailyou.inspection.badge.IwfyBadge;
 import com.iwillfailyou.inspection.sources.SourceMask;
-import com.iwillfailyou.inspections.nullfree.nulls.Null;
-import com.iwillfailyou.inspections.nullfree.nulls.ExcludeComparisions;
+import com.iwillfailyou.inspections.nullfree.nulls.ExcludeComparisons;
 import com.iwillfailyou.inspections.nullfree.nulls.JavaNulls;
+import com.iwillfailyou.inspections.nullfree.nulls.Null;
 import com.iwillfailyou.plugin.Failures;
 import com.iwillfailyou.plugin.Inspection;
 import com.iwillfailyou.plugin.IwfyException;
@@ -22,18 +22,18 @@ import java.util.List;
 public final class Nullfree implements Inspection {
 
     private final SourceMask sourceMask;
-    private final boolean skipComparisions;
+    private final boolean skipComparisons;
     private final int threshold;
     private final List<Null> nulls;
 
     public Nullfree(
         final SourceMask sourceMask,
-        final boolean skipComparisions,
+        final boolean skipComparisons,
         final int threshold
     ) {
         this(
             sourceMask,
-            skipComparisions,
+            skipComparisons,
             threshold,
             new ArrayList<>()
         );
@@ -41,12 +41,12 @@ public final class Nullfree implements Inspection {
 
     public Nullfree(
         final SourceMask sourceMask,
-        final boolean skipComparisions,
+        final boolean skipComparisons,
         final int threshold,
         final List<Null> nulls
     ) {
         this.sourceMask = sourceMask;
-        this.skipComparisions = skipComparisions;
+        this.skipComparisons = skipComparisons;
         this.threshold = threshold;
         this.nulls = nulls;
     }
@@ -74,8 +74,8 @@ public final class Nullfree implements Inspection {
     @Override
     public Failures failures() {
         final Violations<Null> wrapped;
-        if (skipComparisions) {
-            wrapped = new ExcludeComparisions(
+        if (skipComparisons) {
+            wrapped = new ExcludeComparisons(
                 new ExcludeSuppressed<>(new SimpleViolations<>(nulls))
             );
         } else {

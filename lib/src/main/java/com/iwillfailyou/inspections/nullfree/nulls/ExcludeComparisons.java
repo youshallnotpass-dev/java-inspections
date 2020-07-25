@@ -7,11 +7,11 @@ import org.cactoos.list.ListOf;
 
 import java.util.List;
 
-public final class ExcludeComparisions implements Violations<Null> {
+public final class ExcludeComparisons implements Violations<Null> {
 
     private final Violations<Null> origin;
 
-    public ExcludeComparisions(final Violations<Null> origin) {
+    public ExcludeComparisons(final Violations<Null> origin) {
         this.origin = origin;
     }
 
