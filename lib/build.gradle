@@ -41,7 +41,7 @@ if (project.rootProject.file('local.properties').exists()) {
         siteUrl = 'https://github.com/iwillfailyou/java-inspections'
         gitUrl = 'https://github.com/iwillfailyou/java-inspections.git'
 
-        libraryVersion = '0.3.2'
+        libraryVersion = '0.3.4'
 
         developerId = 'nikialeksey'
         developerName = 'Alexey Nikitin'
