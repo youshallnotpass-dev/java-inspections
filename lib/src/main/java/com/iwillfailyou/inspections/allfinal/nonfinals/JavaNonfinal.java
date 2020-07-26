@@ -22,28 +22,52 @@ public final class JavaNonfinal implements Nonfinal {
         final FieldDeclaration expr,
         final TypeDeclaration<?> root
     ) {
-        this(expr, new NodeItem(expr, new NodeDescription(expr, expr, root)));
+        this(
+            expr,
+            new NodeItem(
+                expr,
+                new NodeDescription(expr, expr.getVariable(0), root)
+            )
+        );
     }
 
     public JavaNonfinal(
         final Parameter expr,
         final TypeDeclaration<?> root
     ) {
-        this(expr, new NodeItem(expr, new NodeDescription(expr, expr, root)));
+        this(
+            expr,
+            new NodeItem(
+                expr,
+                new NodeDescription(expr, expr, root)
+            )
+        );
     }
 
     public JavaNonfinal(
         final VariableDeclarationExpr expr,
         final TypeDeclaration<?> root
     ) {
-        this(expr, new NodeItem(expr, new NodeDescription(expr, expr, root)));
+        this(
+            expr,
+            new NodeItem(
+                expr,
+                new NodeDescription(expr, expr, root)
+            )
+        );
     }
 
     public JavaNonfinal(
         final ClassOrInterfaceDeclaration expr,
         final TypeDeclaration<?> root
     ) {
-        this(expr, new NodeItem(expr, new NodeDescription(expr, expr, root)));
+        this(
+            expr,
+            new NodeItem(
+                expr,
+                new NodeDescription(expr, expr.getName(), root)
+            )
+        );
     }
 
     public JavaNonfinal(final Node expr, final Item item) {

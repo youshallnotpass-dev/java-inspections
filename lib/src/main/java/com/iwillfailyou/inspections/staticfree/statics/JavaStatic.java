@@ -1,5 +1,6 @@
 package com.iwillfailyou.inspections.staticfree.statics;
 
+import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
@@ -13,21 +14,7 @@ public final class JavaStatic implements Static {
     private final Item item;
 
     public JavaStatic(
-        final FieldDeclaration expr,
-        final TypeDeclaration<?> root
-    ) {
-        this(new NodeItem(expr, new NodeDescription(expr, expr, root)));
-    }
-
-    public JavaStatic(
-        final MethodDeclaration expr,
-        final TypeDeclaration<?> root
-    ) {
-        this(new NodeItem(expr, new NodeDescription(expr, expr, root)));
-    }
-
-    public JavaStatic(
-        final TypeDeclaration<?> expr,
+        final Node expr,
         final TypeDeclaration<?> root
     ) {
         this(new NodeItem(expr, new NodeDescription(expr, expr, root)));

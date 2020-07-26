@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public final class JavaStatics implements Violations<Static> {
 
@@ -116,29 +117,14 @@ public final class JavaStatics implements Violations<Static> {
                 descriptor,
                 (final CompilationUnit unit, final TypeDeclaration<?> root) -> {
                     final List<Static> result = new ArrayList<>();
-                    final List<FieldDeclaration> fields = unit.findAll(FieldDeclaration.class);
-                    for (final FieldDeclaration field : fields) {
-                        final boolean isStatic = field.isStatic();
-                        if (isStatic) {
-                            result.add(new JavaStatic(field, root));
-                        }
-                    }
-
-                    final List<MethodDeclaration> methods = unit.findAll(MethodDeclaration.class);
-                    for (final MethodDeclaration method : methods) {
-                        final boolean isStatic = method.isStatic();
-                        if (isStatic) {
-                            result.add(new JavaStatic(method, root));
-                        }
-                    }
-
-                    final List<TypeDeclaration> types = unit.findAll(TypeDeclaration.class);
-                    for (final TypeDeclaration<?> type : types) {
-                        final boolean isStatic = type.isStatic();
-                        if (isStatic) {
-                            result.add(new JavaStatic(type, root));
-                        }
-                    }
+                    unit.findAll(Modifier.class)
+                        .stream()
+                        .filter((final Modifier modifier) -> {
+                            return modifier.getKeyword() == Modifier.Keyword.STATIC;
+                        })
+                        .forEach((final Modifier modifier) -> {
+                            result.add(new JavaStatic(modifier, root));
+                        });
                     return result;
                 }
             )
