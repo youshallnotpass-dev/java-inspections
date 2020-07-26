@@ -176,4 +176,33 @@ public final class JavaNonfinalsTest {
         ).asList();
         Assert.assertThat(nonfinals.isEmpty(), IsEqual.equalTo(true));
     }
+
+    @Test
+    public void nonFinalFieldWithAnnotation() throws Exception {
+        final List<Nonfinal> nonfinals = new JavaNonfinals(
+            "final class A {\n",
+            "    @Deprecated\n",
+            "    private int n;\n",
+            "}"
+        ).asList();
+        Assert.assertThat(nonfinals.size(), IsEqual.equalTo(1));
+        Assert.assertThat(
+            nonfinals.get(0).description(),
+            IsEqual.equalTo("A(A.java:3) > n")
+        );
+    }
+
+    @Test
+    public void nonFinalClassWithAnnotation() throws Exception {
+        final List<Nonfinal> nonfinals = new JavaNonfinals(
+            "@SuppressWarnings(\"some-warning\")\n",
+            "public class A {\n",
+            "}"
+        ).asList();
+        Assert.assertThat(nonfinals.size(), IsEqual.equalTo(1));
+        Assert.assertThat(
+            nonfinals.get(0).description(),
+            IsEqual.equalTo("A(A.java:2) > A")
+        );
+    }
 }

@@ -10,32 +10,24 @@ import java.util.Optional;
 public final class NodeDescription implements Description {
 
     private final Node node;
-    private final Unchecked<Node> cause;
+    private final Unchecked<Optional<Node>> cause;
     private final TypeDeclaration<?> root;
 
     public NodeDescription(
         final Node node,
+        final Node cause,
         final TypeDeclaration<?> root
     ) {
         this(
             node,
-            new Unchecked<>(() -> {
-                final Optional<Node> parentNode = node.getParentNode();
-                final Node cause;
-                if (parentNode.isPresent()) {
-                    cause = parentNode.get();
-                } else {
-                    cause = node;
-                }
-                return cause;
-            }),
+            new Unchecked<>(() -> Optional.of(cause)),
             root
         );
     }
 
     public NodeDescription(
         final Node node,
-        final Node cause,
+        final Optional<Node> cause,
         final TypeDeclaration<?> root
     ) {
         this(
@@ -47,7 +39,7 @@ public final class NodeDescription implements Description {
 
     public NodeDescription(
         final Node node,
-        final Unchecked<Node> cause,
+        final Unchecked<Optional<Node>> cause,
         final TypeDeclaration<?> root
     ) {
         this.node = node;
@@ -60,20 +52,31 @@ public final class NodeDescription implements Description {
         final StringBuilder description = new StringBuilder();
         description.append(new NodePath(node).asString());
         final Optional<Range> range = node.getRange();
+        final Optional<Node> causeOpt = cause.value();
         if (range.isPresent()) {
             description.append('(');
             description.append(root.getNameAsString());
             description.append(".java:");
-            description.append(range.get().begin.line);
+            description.append(
+                causeOpt
+                    .map((final Node cause) -> {
+                        return cause.getRange().orElse(range.get());
+                    })
+                    .orElse(range.get())
+                    .begin
+                    .line
+            );
             description.append(')');
         }
-        description.append(" > ");
-        final String causeRepr = cause.value().toString();
-        final int firstBreakIndex = causeRepr.indexOf('\n');
-        if (firstBreakIndex != -1) { // many strings in cause representation
-            description.append(causeRepr, 0, firstBreakIndex);
-        } else {
-            description.append(causeRepr);
+        if (causeOpt.isPresent()) {
+            description.append(" > ");
+            final String causeRepr = causeOpt.get().toString();
+            final int firstBreakIndex = causeRepr.indexOf('\n');
+            if (firstBreakIndex != -1) { // many strings in cause representation
+                description.append(causeRepr, 0, firstBreakIndex);
+            } else {
+                description.append(causeRepr);
+            }
         }
         return description.toString();
     }

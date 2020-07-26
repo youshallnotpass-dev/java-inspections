@@ -117,7 +117,7 @@ public final class JavaNulls implements Violations<Null> {
                         result.add(
                             new JavaNull(
                                 aNull,
-                                new NodeDescription(aNull, root)
+                                new NodeDescription(aNull, aNull, root)
                             )
                         );
                     }

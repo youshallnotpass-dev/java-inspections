@@ -1,6 +1,7 @@
 package com.iwillfailyou.inspections.allpublic.nonpublics;
 
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
@@ -40,7 +41,22 @@ public final class NonpublicViolations implements BiFunc<CompilationUnit,
                 );
                 final boolean interfaceMethod = parentType.isPresent() && parentType.get().isInterface();
                 if (!interfaceMethod) {
-                    nonpublics.add(new JavaNonpublic(method, root));
+                    if (method.isPrivate() || method.isProtected()) {
+                        method
+                            .getModifiers()
+                            .stream()
+                            .filter((final Modifier modifier) -> {
+                                return modifier.getKeyword() == Modifier.Keyword.PRIVATE ||
+                                    modifier.getKeyword() == Modifier.Keyword.PROTECTED;
+                            })
+                            .forEach((final Modifier modifier) -> {
+                                nonpublics.add(
+                                    new JavaNonpublic(method, modifier, root)
+                                );
+                            });
+                    } else {
+                        nonpublics.add(new JavaNonpublic(method, root));
+                    }
                 }
             }
         }

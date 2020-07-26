@@ -35,8 +35,8 @@ public final class NodeDescriptionTest {
         final NullLiteralExpr aNull = nullOpt.get();
 
         Assert.assertThat(
-            new NodeDescription(aNull, typeDeclaration).asString(),
-            IsEqual.equalTo("A(A.java:1) > a = null")
+            new NodeDescription(aNull, aNull, typeDeclaration).asString(),
+            IsEqual.equalTo("A(A.java:1) > null")
         );
     }
 

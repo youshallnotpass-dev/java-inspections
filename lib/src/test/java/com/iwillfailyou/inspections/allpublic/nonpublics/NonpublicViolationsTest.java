@@ -32,7 +32,7 @@ public final class NonpublicViolationsTest {
         );
         Assert.assertThat(
             nonpublics.get(0).description(),
-            StringContains.containsString("A.a(A.java:2)")
+            StringContains.containsString("A.a(A.java:2) > private")
         );
     }
 
@@ -46,7 +46,7 @@ public final class NonpublicViolationsTest {
             ),
             new NonpublicViolations(),
             "class A {\n",
-            "    @SuppressWarnings(\"privatefree\")\n",
+            "    @SuppressWarnings(\"allpublic\")\n",
             "    private void a() {} \n",
             "}"
         ).asList();
@@ -98,6 +98,83 @@ public final class NonpublicViolationsTest {
         Assert.assertThat(
             nonpublics.size(),
             IsEqual.equalTo(0)
+        );
+    }
+
+    @Test
+    public void nonPublicDescriptionWhenDocs() throws Exception {
+        final List<Nonpublic> nonpublics = new JavaViolations<>(
+            new JavaParser(
+                new ParserConfiguration().setLanguageLevel(
+                    ParserConfiguration.LanguageLevel.RAW
+                )
+            ),
+            new NonpublicViolations(),
+            "class A {\n",
+            "    /**\n",
+            "     * Doc\n",
+            "     **/\n",
+            "    void a() {} \n",
+            "}"
+        ).asList();
+
+        Assert.assertThat(
+            nonpublics.size(),
+            IsEqual.equalTo(1)
+        );
+        Assert.assertThat(
+            nonpublics.get(0).description(),
+            IsEqual.equalTo("A.a(A.java:5)")
+        );
+    }
+
+    @Test
+    public void nonPublicDescriptionWhenAnnotation() throws Exception {
+        final List<Nonpublic> nonpublics = new JavaViolations<>(
+            new JavaParser(
+                new ParserConfiguration().setLanguageLevel(
+                    ParserConfiguration.LanguageLevel.RAW
+                )
+            ),
+            new NonpublicViolations(),
+            "class A {\n",
+            "    @Deprecated\n",
+            "    void a() {} \n",
+            "}"
+        ).asList();
+
+        Assert.assertThat(
+            nonpublics.size(),
+            IsEqual.equalTo(1)
+        );
+        Assert.assertThat(
+            nonpublics.get(0).description(),
+            IsEqual.equalTo("A.a(A.java:3)")
+        );
+    }
+
+    @Test
+    public void privateDescriptionWhenAnnotation() throws Exception {
+        final List<Nonpublic> nonpublics = new JavaViolations<>(
+            new JavaParser(
+                new ParserConfiguration().setLanguageLevel(
+                    ParserConfiguration.LanguageLevel.RAW
+                )
+            ),
+            new NonpublicViolations(),
+            "class A {\n",
+            "    @Deprecated\n",
+            "    private void a() {} \n",
+            "}"
+        ).asList();
+
+        Assert.assertThat(
+            nonpublics.size(),
+            IsEqual.equalTo(1)
+        );
+        Assert.assertThat(
+            nonpublics.get(0).description(),
+            StringContains.containsString("A.a(A.java:3) > private")
         );
     }
 
