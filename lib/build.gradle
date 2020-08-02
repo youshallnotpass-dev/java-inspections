@@ -8,7 +8,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    implementation 'com.iwillfailyou:java-plugin:0.0.3'
+    implementation 'com.iwillfailyou:java-plugin:0.0.4'
     implementation 'org.cactoos:cactoos:0.41'
     implementation 'com.github.javaparser:javaparser-symbol-solver-core:3.13.6'
     implementation 'org.apache.httpcomponents:httpclient:4.5.8'
@@ -121,7 +121,7 @@ if (project.rootProject.file('local.properties').exists()) {
                     dependencyNode = dependenciesNode.appendNode('dependency')
                     dependencyNode.appendNode('groupId', 'com.iwillfailyou')
                     dependencyNode.appendNode('artifactId', 'java-plugin')
-                    dependencyNode.appendNode('version', '0.0.3')
+                    dependencyNode.appendNode('version', '0.0.4')
 
                     dependencyNode = dependenciesNode.appendNode('dependency')
                     dependencyNode.appendNode('groupId', 'org.apache.httpcomponents')
