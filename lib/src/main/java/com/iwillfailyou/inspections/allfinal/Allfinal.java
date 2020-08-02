@@ -7,6 +7,7 @@ import com.iwillfailyou.inspection.SimpleViolations;
 import com.iwillfailyou.inspection.Violations;
 import com.iwillfailyou.inspection.badge.IwfyBadge;
 import com.iwillfailyou.inspection.sources.SourceMask;
+import com.iwillfailyou.inspections.allfinal.nonfinals.ExcludeCatchParams;
 import com.iwillfailyou.inspections.allfinal.nonfinals.ExcludeInterfaceMethodParams;
 import com.iwillfailyou.inspections.allfinal.nonfinals.ExcludeLambdaParams;
 import com.iwillfailyou.inspections.allfinal.nonfinals.JavaNonfinals;
@@ -26,19 +27,22 @@ public final class Allfinal implements Inspection {
     private final int threshold;
     private final boolean skipInterfaceMethodParams;
     private final boolean skipLambdaParams;
+    private final boolean skipCatchParams;
     private final List<Nonfinal> nonfinals;
 
     public Allfinal(
         final SourceMask sourceMask,
         final int threshold,
         final boolean skipInterfaceMethodParams,
-        final boolean skipLambdaParams
+        final boolean skipLambdaParams,
+        final boolean skipCatchParams
     ) {
         this(
             sourceMask,
             threshold,
             skipInterfaceMethodParams,
             skipLambdaParams,
+            skipCatchParams,
             new ArrayList<>()
         );
     }
@@ -48,12 +52,14 @@ public final class Allfinal implements Inspection {
         final int threshold,
         final boolean skipInterfaceMethodParams,
         final boolean skipLambdaParams,
+        final boolean skipCatchParams,
         final List<Nonfinal> nonfinals
     ) {
         this.sourceMask = sourceMask;
         this.threshold = threshold;
         this.skipInterfaceMethodParams = skipInterfaceMethodParams;
         this.skipLambdaParams = skipLambdaParams;
+        this.skipCatchParams = skipCatchParams;
         this.nonfinals = nonfinals;
     }
 
@@ -98,9 +104,17 @@ public final class Allfinal implements Inspection {
         } else {
             excludeLambdaParams = excludeInterfaceMethodParams;
         }
+        final Violations<Nonfinal> excludeCatchParams;
+        if (skipCatchParams) {
+            excludeCatchParams = new ExcludeCatchParams(
+                excludeLambdaParams
+            );
+        } else {
+            excludeCatchParams = excludeLambdaParams;
+        }
         return new InspectionFailures<>(
-            excludeLambdaParams,
-            new IwfyBadge(excludeLambdaParams, threshold)
+            excludeCatchParams,
+            new IwfyBadge(excludeCatchParams, threshold)
         );
     }
 }

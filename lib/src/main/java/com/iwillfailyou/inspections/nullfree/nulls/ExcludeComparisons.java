@@ -19,7 +19,7 @@ public final class ExcludeComparisons implements Violations<Null> {
     public List<Null> asList() throws InspectionException {
         return new ListOf<>(
             new Filtered<>(
-                (final Null valuation) -> !valuation.isInComparision(),
+                (final Null valuation) -> !valuation.isInComparison(),
                 origin.asList()
             )
         );

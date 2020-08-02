@@ -140,7 +140,7 @@ public final class JavaNullsTest {
     }
 
     @Test
-    public void nullInComparision() throws Exception {
+    public void nullInComparison() throws Exception {
         final List<Null> nulls = new JavaNulls(
             "class A {\n",
             "    void a() {\n",
@@ -154,13 +154,13 @@ public final class JavaNullsTest {
             IsEqual.equalTo(1)
         );
         Assert.assertThat(
-            nulls.get(0).isInComparision(),
+            nulls.get(0).isInComparison(),
             IsEqual.equalTo(true)
         );
     }
 
     @Test
-    public void nullNotInComparision() throws Exception {
+    public void nullNotInComparison() throws Exception {
         final List<Null> nulls = new JavaNulls(
             "class A {\n",
             "    void a() {\n",
@@ -174,7 +174,7 @@ public final class JavaNullsTest {
             IsEqual.equalTo(1)
         );
         Assert.assertThat(
-            nulls.get(0).isInComparision(),
+            nulls.get(0).isInComparison(),
             IsEqual.equalTo(false)
         );
     }
