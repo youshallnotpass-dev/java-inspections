@@ -40,7 +40,7 @@ public final class JavaNull implements Null {
     }
 
     @Override
-    public boolean isInComparision() {
+    public boolean isInComparison() {
         final List<Boolean> result = Arrays.asList(false);
         final Optional<Node> optParent = expr.getParentNode();
         if (optParent.isPresent()) {

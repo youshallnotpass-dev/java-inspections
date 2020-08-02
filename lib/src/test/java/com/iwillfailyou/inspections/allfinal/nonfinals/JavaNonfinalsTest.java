@@ -205,4 +205,44 @@ public final class JavaNonfinalsTest {
             IsEqual.equalTo("A(A.java:2) > A")
         );
     }
+
+    @Test
+    public void nonFinalCatchParameter() throws Exception {
+        final List<Nonfinal> nonfinals = new JavaNonfinals(
+            "public final class A {\n",
+            "    void a() {\n",
+            "        try {\n",
+            "            final int b = 1;\n",
+            "        } catch (RuntimeException e) {\n",
+            "            e.printStackTrace();",
+            "        }\n",
+            "    }\n",
+            "}"
+        ).asList();
+        Assert.assertThat(nonfinals.size(), IsEqual.equalTo(1));
+        Assert.assertThat(
+            nonfinals.get(0).isCatchParam(),
+            IsEqual.equalTo(true)
+        );
+    }
+
+    @Test
+    public void nonFinalCatchMultiParameter() throws Exception {
+        final List<Nonfinal> nonfinals = new JavaNonfinals(
+            "public final class A {\n",
+            "    void a() {\n",
+            "        try {\n",
+            "            final int b = 1;\n",
+            "        } catch (RuntimeException | IOException e) {\n",
+            "            e.printStackTrace();",
+            "        }\n",
+            "    }\n",
+            "}"
+        ).asList();
+        Assert.assertThat(nonfinals.size(), IsEqual.equalTo(1));
+        Assert.assertThat(
+            nonfinals.get(0).isCatchParam(),
+            IsEqual.equalTo(true)
+        );
+    }
 }

@@ -7,6 +7,7 @@ import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.LambdaExpr;
 import com.github.javaparser.ast.expr.VariableDeclarationExpr;
+import com.github.javaparser.ast.stmt.CatchClause;
 import com.iwillfailyou.javaparser.Item;
 import com.iwillfailyou.javaparser.NodeDescription;
 import com.iwillfailyou.javaparser.NodeItem;
@@ -121,5 +122,20 @@ public final class JavaNonfinal implements Nonfinal {
             lambdaParam = false;
         }
         return lambdaParam;
+    }
+
+    @Override
+    public boolean isCatchParam() {
+        final boolean catchParam;
+        if (expr instanceof Parameter) {
+            catchParam = expr.getParentNode()
+                .filter(
+                    (final Node node) -> node instanceof CatchClause
+                )
+                .isPresent();
+        } else {
+            catchParam = false;
+        }
+        return catchParam;
     }
 }
