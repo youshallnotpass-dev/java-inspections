@@ -16,6 +16,13 @@
 
 
 ## Changelog
+- `0.6.0`
+`setterfree` first implementation
+
+- `0.5.0`
+
+`nomultiplereturn` first implementation
+
 - `0.4.0` 
 
 `allfinal`: skip catch params ability 
