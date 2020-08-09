@@ -1,25 +1,24 @@
 package com.iwillfailyou.inspection.sources.java;
 
+import com.iwillfailyou.inspection.sources.PathSourceMask;
 import com.iwillfailyou.inspection.sources.SourceMask;
 
-import java.nio.file.FileSystems;
 import java.nio.file.Path;
-import java.nio.file.PathMatcher;
 
 public final class JavaSourceMask implements SourceMask {
 
-    private final PathMatcher matcher;
+    private final SourceMask origin;
 
     public JavaSourceMask() {
-        this(FileSystems.getDefault().getPathMatcher("glob:**/*.java"));
+        this(new PathSourceMask("glob:**/*.java"));
     }
 
-    private JavaSourceMask(final PathMatcher matcher) {
-        this.matcher = matcher;
+    private JavaSourceMask(final SourceMask origin) {
+        this.origin = origin;
     }
 
     @Override
     public boolean matches(final Path path) {
-        return matcher.matches(path);
+        return origin.matches(path);
     }
 }

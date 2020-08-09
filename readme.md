@@ -7,6 +7,7 @@
 ![staticfree status](https://iwillfailyou.com/staticfree/iwillfailyou/java-inspections)
 ![allfinal status](https://iwillfailyou.com/allfinal/iwillfailyou/java-inspections)
 ![allpublic status](https://iwillfailyou.com/allpublic/iwillfailyou/java-inspections)
+![setterfree status](https://iwillfailyou.com/setterfree/iwillfailyou/java-inspections)
 
 [![Lib version](https://img.shields.io/maven-central/v/com.iwillfailyou/java-inspections.svg?label=lib)](https://maven-badges.herokuapp.com/maven-central/com.iwillfailyou/java-inspections)
 [![Build Status](https://travis-ci.com/iwillfailyou/java-inspections.svg?branch=master)](https://travis-ci.com/iwillfailyou/java-inspections)
@@ -16,7 +17,12 @@
 
 
 ## Changelog
+- `0.7.0`
+
+Source masks support exclusion
+
 - `0.6.0`
+
 `setterfree` first implementation
 
 - `0.5.0`
