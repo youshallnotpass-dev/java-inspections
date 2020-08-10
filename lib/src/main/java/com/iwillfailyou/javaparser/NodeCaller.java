@@ -17,7 +17,7 @@ public final class NodeCaller implements Caller {
     @Override
     public Node caller() {
         return callee.getParentNode()
-                   .map(parent ->
+                   .map((final Node parent) ->
                             (parent instanceof LambdaExpr || parent instanceof MethodDeclaration)
                                 ? parent
                                 : new NodeCaller(parent).caller())

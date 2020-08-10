@@ -28,9 +28,9 @@ public final class MultipleReturnViolations implements BiFunc<CompilationUnit, T
             final Map<Node, List<ReturnStmt>> returnStmtMap =
                 method.findAll(ReturnStmt.class)
                     .stream()
-                    .collect(Collectors.groupingBy(returnStmt -> new NodeCaller(returnStmt).caller()));
+                    .collect(Collectors.groupingBy((final ReturnStmt returnStmt) -> new NodeCaller(returnStmt).caller()));
 
-            returnStmtMap.forEach((parent, returnStmts) -> {
+            returnStmtMap.forEach((final Node parent, final List<ReturnStmt> returnStmts) -> {
                 if (returnStmts.size() > 1) {
                     multipleReturns.add(new JavaMultipleReturn(parent, root));
                 } else {
