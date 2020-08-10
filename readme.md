@@ -17,6 +17,10 @@
 
 
 ## Changelog
+- `0.8.0`
+
+`inheritancefree` first implementation
+
 - `0.7.0`
 
 Source masks support exclusion

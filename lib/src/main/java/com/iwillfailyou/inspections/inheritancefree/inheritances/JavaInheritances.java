@@ -109,9 +109,8 @@ public final class JavaInheritances implements Violations<Inheritance> {
                 (final CompilationUnit unit, final TypeDeclaration<?> root) ->
                     unit.findAll(ClassOrInterfaceDeclaration.class)
                         .stream()
-                        .filter(type -> !type.isInterface())
-                        .filter(type -> type.getExtendedTypes().isNonEmpty())
-                        .map(type -> new JavaInheritance(type, root))
+                        .filter((final ClassOrInterfaceDeclaration type) -> !type.isInterface() && type.getExtendedTypes().isNonEmpty())
+                        .map((final ClassOrInterfaceDeclaration type) -> new JavaInheritance(type, root))
                         .collect(Collectors.toList())
             )
         );
