@@ -19,7 +19,7 @@ public final class ParentMethodOrLambda implements Search<Node> {
             Node.TreeTraversal.PARENTS,
             (final Node parent) -> {
                 return Optional.of(parent)
-                           .filter(p -> p instanceof LambdaExpr || p instanceof MethodDeclaration);
+                           .filter((final Node p) -> p instanceof LambdaExpr || p instanceof MethodDeclaration);
             });
     }
 }
