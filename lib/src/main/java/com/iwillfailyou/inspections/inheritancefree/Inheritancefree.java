@@ -1,17 +1,21 @@
 package com.iwillfailyou.inspections.inheritancefree;
 
+import com.github.javaparser.JavaParser;
+import com.github.javaparser.ParserConfiguration;
 import com.iwillfailyou.inspection.ExcludeSuppressed;
 import com.iwillfailyou.inspection.InspectionException;
 import com.iwillfailyou.inspection.InspectionFailures;
+import com.iwillfailyou.inspection.JavaViolations;
 import com.iwillfailyou.inspection.SimpleViolations;
 import com.iwillfailyou.inspection.Violations;
 import com.iwillfailyou.inspection.badge.IwfyBadge;
 import com.iwillfailyou.inspection.sources.SourceMask;
 import com.iwillfailyou.inspections.inheritancefree.inheritances.Inheritance;
-import com.iwillfailyou.inspections.inheritancefree.inheritances.JavaInheritances;
+import com.iwillfailyou.inspections.inheritancefree.inheritances.InheritanceViolations;
 import com.iwillfailyou.plugin.Failures;
 import com.iwillfailyou.plugin.Inspection;
 import com.iwillfailyou.plugin.IwfyException;
+
 import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -50,10 +54,20 @@ public final class Inheritancefree implements Inspection {
         final Path path = file.toPath();
         if (sourceMask.matches(path)) {
             try {
-                this.inheritances.addAll(new JavaInheritances(path.toFile()).asList());
+                this.inheritances.addAll(
+                    new JavaViolations<>(
+                        new JavaParser(
+                            new ParserConfiguration().setLanguageLevel(
+                                ParserConfiguration.LanguageLevel.RAW
+                            )
+                        ),
+                        new InheritanceViolations(),
+                        path.toFile()
+                    ).asList()
+                );
             } catch (final InspectionException e) {
                 throw new IwfyException(
-                    "Could not get the inheritances.",
+                    "Could not get the inheritance classes.",
                     e
                 );
             }

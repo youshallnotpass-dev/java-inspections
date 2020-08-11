@@ -1,51 +1,59 @@
 package com.iwillfailyou.inspections.inheritancefree.inheritances.java;
 
+import com.github.javaparser.JavaParser;
+import com.github.javaparser.ParserConfiguration;
 import com.iwillfailyou.inspection.InspectionException;
+import com.iwillfailyou.inspection.JavaViolations;
 import com.iwillfailyou.inspections.inheritancefree.inheritances.Inheritance;
-import com.iwillfailyou.inspections.inheritancefree.inheritances.JavaInheritances;
-import java.io.File;
-import java.io.PrintWriter;
-import java.util.List;
+import com.iwillfailyou.inspections.inheritancefree.inheritances.InheritanceViolations;
 import org.hamcrest.core.IsEqual;
-import org.hamcrest.core.StringContains;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-public final class JavaInheritancesTest {
+import java.util.List;
+
+public final class InheritanceViolationsTest {
 
     @Rule
     public final TemporaryFolder folder = new TemporaryFolder();
 
     @Test
     public void oneClassInheritance() throws Exception {
+        final List<Inheritance> inheritances = new JavaViolations<>(
+            new JavaParser(
+                new ParserConfiguration().setLanguageLevel(
+                    ParserConfiguration.LanguageLevel.RAW
+                )
+            ),
+            new InheritanceViolations(),
+            "class A extends B {}"
+        ).asList();
+
         Assert.assertThat(
-            new JavaInheritances(
-                "class A extends B {}"
-            ).asList().size(),
+            inheritances.size(),
             IsEqual.equalTo(1)
         );
-    }
-
-    @Test
-    public void oneClassInheritanceFromFile() throws Exception {
-        final File source = folder.newFile();
-        try (final PrintWriter writer = new PrintWriter(source)) {
-            writer.println("class A extends B {}");
-        }
         Assert.assertThat(
-            new JavaInheritances(source).asList().size(),
-            IsEqual.equalTo(1)
+            inheritances.get(0).description(),
+            IsEqual.equalTo("A(A.java:1) > A")
         );
     }
 
     @Test
     public void classSuppressedInheritance() throws Exception {
-        final List<Inheritance> inheritances = new JavaInheritances(
+        final List<Inheritance> inheritances = new JavaViolations<>(
+            new JavaParser(
+                new ParserConfiguration().setLanguageLevel(
+                    ParserConfiguration.LanguageLevel.RAW
+                )
+            ),
+            new InheritanceViolations(),
             "@SuppressWarnings(\"inheritancefree\")\n",
             "class A extends B{}"
         ).asList();
+
         Assert.assertThat(
             inheritances.size(),
             IsEqual.equalTo(1)
@@ -58,10 +66,17 @@ public final class JavaInheritancesTest {
 
     @Test
     public void multipleSuppressedInheritance() throws Exception {
-        final List<Inheritance> inheritances = new JavaInheritances(
+        final List<Inheritance> inheritances = new JavaViolations<>(
+            new JavaParser(
+                new ParserConfiguration().setLanguageLevel(
+                    ParserConfiguration.LanguageLevel.RAW
+                )
+            ),
+            new InheritanceViolations(),
             "@SuppressWarnings(value = {\"inheritancefree\", \"something_else\"})\n",
             "class A extends B {}"
         ).asList();
+
         Assert.assertThat(
             inheritances.size(),
             IsEqual.equalTo(1)
@@ -75,7 +90,13 @@ public final class JavaInheritancesTest {
     @Test
     public void inheritancesWhenParsingError() {
         try {
-            new JavaInheritances(
+            new JavaViolations<>(
+                new JavaParser(
+                    new ParserConfiguration().setLanguageLevel(
+                        ParserConfiguration.LanguageLevel.RAW
+                    )
+                ),
+                new InheritanceViolations(),
                 "class A extends B {\n",
                 "    void int a() {\n",
                 "    }\n",
@@ -83,23 +104,6 @@ public final class JavaInheritancesTest {
             ).asList();
         } catch (final InspectionException e) {
             // green
-        } catch (final Throwable e) {
-            Assert.fail();
-        }
-    }
-
-    @Test
-    public void inheritancesWhenParsingErrorInFile() throws Exception {
-        final File source = folder.newFile("Main.java");
-        try (final PrintWriter writer = new PrintWriter(source)) {
-            writer.println("class A extends B{");
-            writer.println("    private public final String a = null;");
-            writer.println("}");
-        }
-        try {
-            new JavaInheritances(source).asList();
-        } catch (final InspectionException e) {
-            Assert.assertThat(e.getMessage(), StringContains.containsString("Main.java"));
         } catch (final Throwable e) {
             Assert.fail();
         }

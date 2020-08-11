@@ -39,7 +39,7 @@ public final class NullfreeTest {
         final Failures failures = inspection.failures();
         try {
             failures.failIfRed();
-            Assert.fail("Must failed!");
+            Assert.fail("Must fail!");
         } catch (final Exception e) {
             // green
         }
