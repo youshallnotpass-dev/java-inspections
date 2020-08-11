@@ -3,7 +3,6 @@ package com.iwillfailyou.inspections.nomultiplereturn.multiplereturns;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
-import com.iwillfailyou.inspections.allpublic.nonpublics.Nonpublic;
 import com.iwillfailyou.javaparser.Item;
 import com.iwillfailyou.javaparser.NodeDescription;
 import com.iwillfailyou.javaparser.NodeItem;

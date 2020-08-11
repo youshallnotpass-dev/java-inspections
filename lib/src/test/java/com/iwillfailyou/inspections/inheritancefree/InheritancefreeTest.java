@@ -2,13 +2,14 @@ package com.iwillfailyou.inspections.inheritancefree;
 
 import com.iwillfailyou.inspection.sources.java.JavaSourceMask;
 import com.iwillfailyou.plugin.Failures;
-import java.io.File;
 import org.cactoos.io.TeeInput;
 import org.cactoos.scalar.LengthOf;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+
+import java.io.File;
 
 public final class InheritancefreeTest {
 
@@ -67,7 +68,7 @@ public final class InheritancefreeTest {
         final Failures failures = inspection.failures();
         try {
             failures.failIfRed();
-            Assert.fail("Must failed!");
+            Assert.fail("Must fail!");
         } catch (final Exception e) {
             // green
         }
@@ -100,7 +101,7 @@ public final class InheritancefreeTest {
         final Failures failures = inspection.failures();
         try {
             failures.failIfRed();
-            Assert.fail("Must not failed!");
+            Assert.fail("Must fail!");
         } catch (final Exception e) {
             // green
         }
