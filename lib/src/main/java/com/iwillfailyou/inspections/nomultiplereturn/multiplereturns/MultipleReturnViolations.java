@@ -4,9 +4,8 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
-import com.github.javaparser.ast.expr.ConditionalExpr;
 import com.github.javaparser.ast.stmt.ReturnStmt;
-import com.iwillfailyou.javaparser.NodeCaller;
+import com.iwillfailyou.javaparser.ParentMethodOrLambda;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,16 +27,12 @@ public final class MultipleReturnViolations implements BiFunc<CompilationUnit, T
             final Map<Node, List<ReturnStmt>> returnStmtMap =
                 method.findAll(ReturnStmt.class)
                     .stream()
-                    .collect(Collectors.groupingBy((final ReturnStmt returnStmt) -> new NodeCaller(returnStmt).caller()));
+                    .collect(Collectors.groupingBy((final ReturnStmt returnStmt) ->
+                                                       new ParentMethodOrLambda(returnStmt).find().orElse(returnStmt)));
 
             returnStmtMap.forEach((final Node parent, final List<ReturnStmt> returnStmts) -> {
                 if (returnStmts.size() > 1) {
                     multipleReturns.add(new JavaMultipleReturn(parent, root));
-                } else {
-                    final ReturnStmt returnStmt = returnStmts.get(0);
-                    if (returnStmt.getChildNodes().size() > 0 && returnStmt.getChildNodes().get(0) instanceof ConditionalExpr) {
-                        multipleReturns.add(new JavaMultipleReturn(returnStmt.getChildNodes().get(0), root));
-                    }
                 }
             });
         }

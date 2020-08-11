@@ -212,7 +212,7 @@ public final class MultipleReturnViolationsTest {
     }
 
     @Test
-    public void withTwoReturnsInlineIf() throws Exception {
+    public void withConditionalReturn() throws Exception {
         final List<MultipleReturn> multipleReturns = new JavaViolations<>(
             new JavaParser(
                 new ParserConfiguration().setLanguageLevel(
@@ -231,11 +231,7 @@ public final class MultipleReturnViolationsTest {
 
         Assert.assertThat(
             multipleReturns.size(),
-            IsEqual.equalTo(1)
-        );
-        Assert.assertThat(
-            multipleReturns.get(0).description(),
-            IsEqual.equalTo("A.a(A.java:3)")
+            IsEqual.equalTo(0)
         );
     }
 }
