@@ -3,10 +3,14 @@ package com.iwillfailyou.inspections.nomultiplereturn.multiplereturns;
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParserConfiguration;
 import com.iwillfailyou.inspection.JavaViolations;
-import java.util.List;
+import com.iwillfailyou.inspection.Violation;
+import org.hamcrest.core.IsCollectionContaining;
 import org.hamcrest.core.IsEqual;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public final class MultipleReturnViolationsTest {
 
@@ -169,13 +173,8 @@ public final class MultipleReturnViolationsTest {
             IsEqual.equalTo(2)
         );
         Assert.assertThat(
-            multipleReturns.get(0).description(),
-            IsEqual.equalTo("A.a(A.java:2)")
-        );
-        Assert.assertThat(
-            multipleReturns.get(1).description(),
-            IsEqual.equalTo("A.a(A.java:5)")
-        );
+            multipleReturns.stream().map(Violation::description).collect(Collectors.toList()),
+            IsCollectionContaining.hasItems("A.a(A.java:2)", "A.a(A.java:5)"));
     }
 
     @Test
