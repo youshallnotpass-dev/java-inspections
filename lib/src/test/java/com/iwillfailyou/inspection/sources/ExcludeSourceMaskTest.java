@@ -62,4 +62,57 @@ public final class ExcludeSourceMaskTest {
         );
     }
 
+    @Test
+    public void excludeNothing() {
+        final SourceMask mask = new ExcludeSourceMask(
+            new PathSourceMask(),
+            new JavaSourceMask()
+        );
+        Assert.assertThat(
+            mask.matches(
+                Paths.get(
+                    ".",
+                    "lib",
+                    "src",
+                    "test",
+                    "java",
+                    "com",
+                    "example",
+                    "MainTest.java"
+                )
+            ),
+            IsEqual.equalTo(true)
+        );
+        Assert.assertThat(
+            mask.matches(
+                Paths.get(
+                    ".",
+                    "lib",
+                    "src",
+                    "test",
+                    "java",
+                    "com",
+                    "example",
+                    "Main.java"
+                )
+            ),
+            IsEqual.equalTo(true)
+        );
+        Assert.assertThat(
+            mask.matches(
+                Paths.get(
+                    ".",
+                    "lib",
+                    "src",
+                    "main",
+                    "java",
+                    "com",
+                    "example",
+                    "Main.java"
+                )
+            ),
+            IsEqual.equalTo(true)
+        );
+    }
+
 }
