@@ -5,7 +5,7 @@ import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.stmt.ReturnStmt;
-import com.iwillfailyou.javaparser.ParentMethodOrLambda;
+import com.iwillfailyou.javaparser.ParentNodeWithParameters;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,8 +27,9 @@ public final class MultipleReturnViolations implements BiFunc<CompilationUnit, T
             final Map<Node, List<ReturnStmt>> returnStmtMap =
                 method.findAll(ReturnStmt.class)
                     .stream()
-                    .collect(Collectors.groupingBy((final ReturnStmt returnStmt) ->
-                                                       new ParentMethodOrLambda(returnStmt).find().orElse(returnStmt)));
+                    .collect(Collectors.groupingBy((final ReturnStmt returnStmt) -> {
+                        return new ParentNodeWithParameters(returnStmt).find();
+                    }));
 
             returnStmtMap.forEach((final Node parent, final List<ReturnStmt> returnStmts) -> {
                 if (returnStmts.size() > 1) {

@@ -233,4 +233,28 @@ public final class MultipleReturnViolationsTest {
             IsEqual.equalTo(0)
         );
     }
+
+    @Test
+    public void withOneReturnInLambdaExpr() throws Exception {
+        final List<MultipleReturn> multipleReturns = new JavaViolations<>(
+            new JavaParser(
+                new ParserConfiguration().setLanguageLevel(
+                    ParserConfiguration.LanguageLevel.RAW
+                )
+            ),
+            new MultipleReturnViolations(),
+            "class A {\n",
+            "    int a() {\n",
+            "        return method(() -> {\n",
+            "             return 1;\n",
+            "        });\n",
+            "    }\n",
+            "}"
+        ).asList();
+
+        Assert.assertThat(
+            multipleReturns.size(),
+            IsEqual.equalTo(0)
+        );
+    }
 }
