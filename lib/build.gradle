@@ -1,7 +1,6 @@
 plugins {
     id 'java-library'
     id 'jacoco'
-    id 'com.jfrog.bintray' version '1.8.4'
 }
 
 sourceCompatibility = 1.8
@@ -29,14 +28,11 @@ check.dependsOn jacocoTestReport
 
 if (project.rootProject.file('local.properties').exists()) {
     ext {
-        bintrayName = 'java-inspections'
         artifact = 'java-inspections'
+        publishedGroupId = 'com.iwillfailyou'
         libraryName = 'java-inspections'
 
         libraryDescription = 'Java inspections library for iwillfailyou'
-
-        bintrayRepo = 'java'
-        publishedGroupId = 'com.iwillfailyou'
 
         siteUrl = 'https://github.com/iwillfailyou/java-inspections'
         gitUrl = 'https://github.com/iwillfailyou/java-inspections.git'
@@ -48,16 +44,17 @@ if (project.rootProject.file('local.properties').exists()) {
         developerEmail = 'nikialeksey@gmail.com'
         licenseName = 'MIT License'
         licenseUrl = 'https://github.com/iwillfailyou/java-inspections/blob/master/LICENSE'
-        allLicenses = ['MIT']
     }
+    version = libraryVersion
+
     Properties properties = new Properties()
     properties.load(
             project.rootProject.file('local.properties').newDataInputStream()
     )
 
     apply plugin: 'maven'
-    apply plugin: 'com.jfrog.bintray'
     apply plugin: 'maven-publish'
+    apply plugin: 'signing'
 
     task sourcesJar(type: Jar, dependsOn: classes) {
         classifier = 'sources'
@@ -70,6 +67,17 @@ if (project.rootProject.file('local.properties').exists()) {
     }
 
     publishing {
+        repositories {
+            maven {
+                name = 'central'
+                url = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+                credentials {
+                    username properties.getProperty("sonatype.user")
+                    password properties.getProperty("sonatype.pass")
+                }
+            }
+        }
+
         publications {
             lib(MavenPublication) {
                 artifact(javadocJar)
@@ -131,34 +139,12 @@ if (project.rootProject.file('local.properties').exists()) {
             }
         }
     }
-    version = libraryVersion
-    bintray {
-        user = properties.getProperty("bintray.user")
-        key = properties.getProperty("bintray.apikey")
-        publications = ['lib']
 
-        pkg {
-            userOrg = 'iwillfailyou'
-            repo = bintrayRepo
-            name = bintrayName
-            desc = libraryDescription
-            websiteUrl = siteUrl
-            vcsUrl = gitUrl
-            licenses = allLicenses
-            publish = true
-            publicDownloadNumbers = true
-            version {
-                desc = libraryDescription
-                gpg {
-                    sign = true
-                    passphrase = properties.getProperty("bintray.gpg.password")
-                }
-                mavenCentralSync {
-                    sync = true
-                    user = properties.getProperty("bintray.sonatype.user")
-                    password = properties.getProperty("bintray.sonatype.pass")
-                }
-            }
-        }
+    def signingKeyId = properties.getProperty("signingKeyId")
+    def signingKey = new File(properties.getProperty("signingKey")).text
+    def signingPassword = properties.getProperty("signingPassword")
+    signing {
+        useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
+        sign(publishing.publications.lib)
     }
 }
