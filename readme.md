@@ -15,8 +15,15 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/youshallnotpass-dev/java-inspections/blob/master/LICENSE)
 
+## Publish to maven central
+```bash
+./gradlew build sign publish closeAndReleaseRepository
+```
+
 
 ## Changelog
+- `0.9.1` auto close and release oss repository
+
 - `0.9.0` rebrand from `iwillfailyou` to `youshallnotpass`
 
 - `0.8.0`

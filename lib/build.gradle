@@ -37,7 +37,7 @@ if (project.rootProject.file('local.properties').exists()) {
         siteUrl = 'https://github.com/youshallnotpass-dev/java-inspections'
         gitUrl = 'https://github.com/youshallnotpass-dev/java-inspections.git'
 
-        libraryVersion = '0.9.0'
+        libraryVersion = '0.9.1'
 
         developerId = 'nikialeksey'
         developerName = 'Alexey Nikitin'
@@ -146,5 +146,12 @@ if (project.rootProject.file('local.properties').exists()) {
     signing {
         useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
         sign(publishing.publications.lib)
+    }
+
+    nexusStaging {
+        serverUrl = "https://s01.oss.sonatype.org/service/local/"
+        username = properties.getProperty("sonatype.user")
+        password = properties.getProperty("sonatype.pass")
+        packageGroup = publishedGroupId
     }
 }
