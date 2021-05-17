@@ -22,6 +22,8 @@
 
 
 ## Changelog
+- `0.9.3` fixed dependency vulnerabilities
+
 - `0.9.1` auto close and release oss repository
 
 - `0.9.0` rebrand from `iwillfailyou` to `youshallnotpass`
