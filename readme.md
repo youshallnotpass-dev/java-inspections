@@ -3,20 +3,22 @@
 [![Elegant Objects Respected Here](https://www.elegantobjects.org/badge.svg)](https://www.elegantobjects.org)
 [![framework less](http://frameworklessmovement.org/img/frameworkless__badge-github.svg)](https://github.com/frameworkless-movement/manifesto)
 
-![nullfree status](https://iwillfailyou.com/nullfree/iwillfailyou/java-inspections)
-![staticfree status](https://iwillfailyou.com/staticfree/iwillfailyou/java-inspections)
-![allfinal status](https://iwillfailyou.com/allfinal/iwillfailyou/java-inspections)
-![allpublic status](https://iwillfailyou.com/allpublic/iwillfailyou/java-inspections)
-![setterfree status](https://iwillfailyou.com/setterfree/iwillfailyou/java-inspections)
+![nullfree status](https://youshallnotpass.dev/nullfree/youshallnotpass-dev/java-inspections)
+![staticfree status](https://youshallnotpass.dev/staticfree/youshallnotpass-dev/java-inspections)
+![allfinal status](https://youshallnotpass.dev/allfinal/youshallnotpass-dev/java-inspections)
+![allpublic status](https://youshallnotpass.dev/allpublic/youshallnotpass-dev/java-inspections)
+![setterfree status](https://youshallnotpass.dev/setterfree/youshallnotpass-dev/java-inspections)
 
-[![Lib version](https://img.shields.io/maven-central/v/com.iwillfailyou/java-inspections.svg?label=lib)](https://maven-badges.herokuapp.com/maven-central/com.iwillfailyou/java-inspections)
-[![Build Status](https://travis-ci.com/iwillfailyou/java-inspections.svg?branch=master)](https://travis-ci.com/iwillfailyou/java-inspections)
-[![codecov](https://codecov.io/gh/iwillfailyou/java-inspections/branch/master/graph/badge.svg)](https://codecov.io/gh/iwillfailyou/java-inspections)
+[![Lib version](https://img.shields.io/maven-central/v/dev.youshallnotpass/java-inspections.svg?label=lib)](https://maven-badges.herokuapp.com/maven-central/dev.youshallnotpass/java-inspections)
+[![Build Status](https://travis-ci.com/youshallnotpass-dev/java-inspections.svg?branch=master)](https://travis-ci.com/youshallnotpass-dev/java-inspections)
+[![codecov](https://codecov.io/gh/youshallnotpass-dev/java-inspections/branch/master/graph/badge.svg)](https://codecov.io/gh/youshallnotpass-dev/java-inspections)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/iwillfailyou/java-inspections/blob/master/LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/youshallnotpass-dev/java-inspections/blob/master/LICENSE)
 
 
 ## Changelog
+- `0.9.0` rebrand from `iwillfailyou` to `youshallnotpass`
+
 - `0.8.0`
 
 `inheritancefree` first implementation
