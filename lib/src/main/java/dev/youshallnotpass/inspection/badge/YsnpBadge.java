@@ -17,16 +17,16 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class IwfyBadge implements Badge {
+public final class YsnpBadge implements Badge {
 
     private final Violations<? extends Violation> violations;
     private final int threshold;
 
-    public IwfyBadge(final Violations<? extends Violation> violations) {
+    public YsnpBadge(final Violations<? extends Violation> violations) {
         this(violations, 0);
     }
 
-    public IwfyBadge(
+    public YsnpBadge(
         final Violations<? extends Violation> violations,
         final int threshold
     ) {

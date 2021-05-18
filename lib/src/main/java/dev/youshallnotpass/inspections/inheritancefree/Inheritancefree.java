@@ -8,13 +8,13 @@ import dev.youshallnotpass.inspection.InspectionFailures;
 import dev.youshallnotpass.inspection.JavaViolations;
 import dev.youshallnotpass.inspection.SimpleViolations;
 import dev.youshallnotpass.inspection.Violations;
-import dev.youshallnotpass.inspection.badge.IwfyBadge;
+import dev.youshallnotpass.inspection.badge.YsnpBadge;
 import dev.youshallnotpass.inspection.sources.SourceMask;
 import dev.youshallnotpass.inspections.inheritancefree.inheritances.Inheritance;
 import dev.youshallnotpass.inspections.inheritancefree.inheritances.InheritanceViolations;
 import dev.youshallnotpass.plugin.Failures;
 import dev.youshallnotpass.plugin.Inspection;
-import dev.youshallnotpass.plugin.IwfyException;
+import dev.youshallnotpass.plugin.YsnpException;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -50,7 +50,7 @@ public final class Inheritancefree implements Inspection {
     }
 
     @Override
-    public void accept(final File file) throws IwfyException {
+    public void accept(final File file) throws YsnpException {
         final Path path = file.toPath();
         if (sourceMask.matches(path)) {
             try {
@@ -66,7 +66,7 @@ public final class Inheritancefree implements Inspection {
                     ).asList()
                 );
             } catch (final InspectionException e) {
-                throw new IwfyException(
+                throw new YsnpException(
                     "Could not get the inheritance classes.",
                     e
                 );
@@ -79,7 +79,7 @@ public final class Inheritancefree implements Inspection {
         final Violations<Inheritance> excludeSuppressed = new ExcludeSuppressed<>(new SimpleViolations<>(this.inheritances));
         return new InspectionFailures<>(
             excludeSuppressed,
-            new IwfyBadge(excludeSuppressed, threshold)
+            new YsnpBadge(excludeSuppressed, threshold)
         );
     }
 }

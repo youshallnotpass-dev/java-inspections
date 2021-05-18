@@ -5,7 +5,7 @@ import dev.youshallnotpass.inspection.InspectionException;
 import dev.youshallnotpass.inspection.InspectionFailures;
 import dev.youshallnotpass.inspection.SimpleViolations;
 import dev.youshallnotpass.inspection.Violations;
-import dev.youshallnotpass.inspection.badge.IwfyBadge;
+import dev.youshallnotpass.inspection.badge.YsnpBadge;
 import dev.youshallnotpass.inspection.sources.SourceMask;
 import dev.youshallnotpass.inspections.allfinal.nonfinals.ExcludeCatchParams;
 import dev.youshallnotpass.inspections.allfinal.nonfinals.ExcludeInterfaceMethodParams;
@@ -14,7 +14,7 @@ import dev.youshallnotpass.inspections.allfinal.nonfinals.JavaNonfinals;
 import dev.youshallnotpass.inspections.allfinal.nonfinals.Nonfinal;
 import dev.youshallnotpass.plugin.Failures;
 import dev.youshallnotpass.plugin.Inspection;
-import dev.youshallnotpass.plugin.IwfyException;
+import dev.youshallnotpass.plugin.YsnpException;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -69,13 +69,13 @@ public final class Allfinal implements Inspection {
     }
 
     @Override
-    public void accept(final File file) throws IwfyException {
+    public void accept(final File file) throws YsnpException {
         final Path path = file.toPath();
         if (sourceMask.matches(path)) {
             try {
                 this.nonfinals.addAll(new JavaNonfinals(path.toFile()).asList());
             } catch (final InspectionException e) {
-                throw new IwfyException(
+                throw new YsnpException(
                     "Could not get the nulls.",
                     e
                 );
@@ -114,7 +114,7 @@ public final class Allfinal implements Inspection {
         }
         return new InspectionFailures<>(
             excludeCatchParams,
-            new IwfyBadge(excludeCatchParams, threshold)
+            new YsnpBadge(excludeCatchParams, threshold)
         );
     }
 }
