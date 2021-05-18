@@ -7,7 +7,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    implementation 'dev.youshallnotpass:java-plugin:0.1.0'
+    implementation 'com.nikialeksey:goo:0.0.2'
     implementation 'org.cactoos:cactoos:0.50'
     implementation 'com.github.javaparser:javaparser-symbol-solver-core:3.22.1'
     implementation 'org.apache.httpcomponents.client5:httpclient5:5.1'
@@ -37,7 +37,7 @@ if (project.rootProject.file('local.properties').exists()) {
         siteUrl = 'https://github.com/youshallnotpass-dev/java-inspections'
         gitUrl = 'https://github.com/youshallnotpass-dev/java-inspections.git'
 
-        libraryVersion = '0.9.3'
+        libraryVersion = '0.9.4'
 
         developerId = 'nikialeksey'
         developerName = 'Alexey Nikitin'
@@ -116,7 +116,13 @@ if (project.rootProject.file('local.properties').exists()) {
 
                 pom.withXml {
                     def dependenciesNode = asNode().appendNode('dependencies')
+
                     def dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', 'com.nikialeksey')
+                    dependencyNode.appendNode('artifactId', 'goo')
+                    dependencyNode.appendNode('version', '0.0.2')
+
+                    dependencyNode = dependenciesNode.appendNode('dependency')
                     dependencyNode.appendNode('groupId', 'org.cactoos')
                     dependencyNode.appendNode('artifactId', 'cactoos')
                     dependencyNode.appendNode('version', '0.50')
@@ -125,11 +131,6 @@ if (project.rootProject.file('local.properties').exists()) {
                     dependencyNode.appendNode('groupId', 'com.github.javaparser')
                     dependencyNode.appendNode('artifactId', 'javaparser-symbol-solver-core')
                     dependencyNode.appendNode('version', '3.22.1')
-
-                    dependencyNode = dependenciesNode.appendNode('dependency')
-                    dependencyNode.appendNode('groupId', 'dev.youshallnotpass')
-                    dependencyNode.appendNode('artifactId', 'java-plugin')
-                    dependencyNode.appendNode('version', '0.1.0')
 
                     dependencyNode = dependenciesNode.appendNode('dependency')
                     dependencyNode.appendNode('groupId', 'org.apache.httpcomponents.client5')

@@ -2,7 +2,7 @@ package dev.youshallnotpass.inspection;
 
 import dev.youshallnotpass.inspection.badge.Badge;
 import dev.youshallnotpass.plugin.Failures;
-import dev.youshallnotpass.plugin.IwfyException;
+import dev.youshallnotpass.plugin.YsnpException;
 import dev.youshallnotpass.plugin.Ui;
 
 import java.net.URL;
@@ -21,31 +21,31 @@ public final class InspectionFailures<T extends Violation> implements Failures {
     }
 
     @Override
-    public void failIfRed() throws IwfyException {
+    public void failIfRed() throws YsnpException {
         try {
             badge.failIfRed();
         } catch (final InspectionException e) {
-            throw new IwfyException("Inspection failed. ", e);
+            throw new YsnpException("Inspection failed. ", e);
         }
     }
 
     @Override
-    public void show(final Ui ui) throws IwfyException {
+    public void show(final Ui ui) throws YsnpException {
         try {
             for (final T violation : nulls.asList()) {
                 ui.println(violation.description());
             }
         } catch (final InspectionException e) {
-            throw new IwfyException("Could not show the violations.", e);
+            throw new YsnpException("Could not show the violations.", e);
         }
     }
 
     @Override
-    public void publish(final URL url) throws IwfyException {
+    public void publish(final URL url) throws YsnpException {
         try {
             badge.send(url);
         } catch (final InspectionException e) {
-            throw new IwfyException(
+            throw new YsnpException(
                 "Could not publish the violations.",
                 e
             );

@@ -5,14 +5,14 @@ import dev.youshallnotpass.inspection.InspectionException;
 import dev.youshallnotpass.inspection.InspectionFailures;
 import dev.youshallnotpass.inspection.SimpleViolations;
 import dev.youshallnotpass.inspection.Violations;
-import dev.youshallnotpass.inspection.badge.IwfyBadge;
+import dev.youshallnotpass.inspection.badge.YsnpBadge;
 import dev.youshallnotpass.inspection.sources.SourceMask;
 import dev.youshallnotpass.inspections.nullfree.nulls.ExcludeComparisons;
 import dev.youshallnotpass.inspections.nullfree.nulls.JavaNulls;
 import dev.youshallnotpass.inspections.nullfree.nulls.Null;
 import dev.youshallnotpass.plugin.Failures;
 import dev.youshallnotpass.plugin.Inspection;
-import dev.youshallnotpass.plugin.IwfyException;
+import dev.youshallnotpass.plugin.YsnpException;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -57,13 +57,13 @@ public final class Nullfree implements Inspection {
     }
 
     @Override
-    public void accept(final File file) throws IwfyException {
+    public void accept(final File file) throws YsnpException {
         final Path path = file.toPath();
         if (sourceMask.matches(path)) {
             try {
                 this.nulls.addAll(new JavaNulls(path.toFile()).asList());
             } catch (final InspectionException e) {
-                throw new IwfyException(
+                throw new YsnpException(
                     "Could not get the nulls.",
                     e
                 );
@@ -83,7 +83,7 @@ public final class Nullfree implements Inspection {
         }
         return new InspectionFailures<>(
             wrapped,
-            new IwfyBadge(wrapped, threshold)
+            new YsnpBadge(wrapped, threshold)
         );
     }
 }

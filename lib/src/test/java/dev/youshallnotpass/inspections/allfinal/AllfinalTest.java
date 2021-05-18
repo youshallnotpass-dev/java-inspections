@@ -1,7 +1,7 @@
 package dev.youshallnotpass.inspections.allfinal;
 
 import dev.youshallnotpass.inspection.sources.java.JavaSourceMask;
-import dev.youshallnotpass.plugin.IwfyException;
+import dev.youshallnotpass.plugin.YsnpException;
 import org.cactoos.io.TeeInput;
 import org.cactoos.scalar.LengthOf;
 import org.junit.Assert;
@@ -45,7 +45,7 @@ public final class AllfinalTest {
         try {
             allfinal.failures().failIfRed();
             // green
-        } catch (final IwfyException e) {
+        } catch (final YsnpException e) {
             Assert.fail();
         }
     }
@@ -79,7 +79,7 @@ public final class AllfinalTest {
         try {
             allfinal.failures().failIfRed();
             Assert.fail();
-        } catch (final IwfyException e) {
+        } catch (final YsnpException e) {
             // green
         }
     }
@@ -117,7 +117,7 @@ public final class AllfinalTest {
         try {
             allfinal.failures().failIfRed();
             Assert.fail();
-        } catch (final IwfyException e) {
+        } catch (final YsnpException e) {
             // green
         }
     }

@@ -5,11 +5,11 @@ import dev.youshallnotpass.inspections.nullfree.nulls.JavaNulls;
 import org.junit.Assert;
 import org.junit.Test;
 
-public final class IwfyBadgeTest {
+public final class YsnpBadgeTest {
     @Test
     public void failThreshold() {
         try {
-            new IwfyBadge(
+            new YsnpBadge(
                 new JavaNulls(
                     "class A {",
                     "  String name = null;",

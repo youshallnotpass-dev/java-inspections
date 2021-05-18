@@ -8,13 +8,13 @@ import dev.youshallnotpass.inspection.InspectionFailures;
 import dev.youshallnotpass.inspection.JavaViolations;
 import dev.youshallnotpass.inspection.SimpleViolations;
 import dev.youshallnotpass.inspection.Violations;
-import dev.youshallnotpass.inspection.badge.IwfyBadge;
+import dev.youshallnotpass.inspection.badge.YsnpBadge;
 import dev.youshallnotpass.inspection.sources.SourceMask;
 import dev.youshallnotpass.inspections.setterfree.setters.Setter;
 import dev.youshallnotpass.inspections.setterfree.setters.SetterViolations;
 import dev.youshallnotpass.plugin.Failures;
 import dev.youshallnotpass.plugin.Inspection;
-import dev.youshallnotpass.plugin.IwfyException;
+import dev.youshallnotpass.plugin.YsnpException;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -54,7 +54,7 @@ public final class SetterFree implements Inspection {
     }
 
     @Override
-    public void accept(final File file) throws IwfyException {
+    public void accept(final File file) throws YsnpException {
         final Path path = file.toPath();
         if (sourceMask.matches(path)) {
             try {
@@ -70,7 +70,7 @@ public final class SetterFree implements Inspection {
                     ).asList()
                 );
             } catch (final InspectionException e) {
-                throw new IwfyException(
+                throw new YsnpException(
                     "Could not get the setters.",
                     e
                 );
@@ -85,7 +85,7 @@ public final class SetterFree implements Inspection {
         );
         return new InspectionFailures<>(
             setterViolations,
-            new IwfyBadge(setterViolations, threshold)
+            new YsnpBadge(setterViolations, threshold)
         );
     }
 }
