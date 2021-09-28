@@ -22,6 +22,8 @@
 
 
 ## Changelog
+- `0.9.5` Fail sending badge if the response was not success
+
 - `0.9.4` included `java-plugin` dependency
 
 - `0.9.3` fixed dependency vulnerabilities
