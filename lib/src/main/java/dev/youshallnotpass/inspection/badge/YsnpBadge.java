@@ -7,9 +7,12 @@ import org.apache.hc.client5.http.ClientProtocolException;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.entity.UrlEncodedFormEntity;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.HttpStatus;
 import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
+import org.cactoos.text.FormattedText;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -60,7 +63,16 @@ public final class YsnpBadge implements Badge {
                     form
                 )
             );
-            httpClient.execute(saveBadgeInfo).close();
+            try (final CloseableHttpResponse response = httpClient.execute(saveBadgeInfo)) {
+                if (response.getCode() != HttpStatus.SC_OK) {
+                    throw new InspectionException(
+                        new FormattedText(
+                            "Could not send the badge, response: %f",
+                            response.toString()
+                        ).toString()
+                    );
+                }
+            }
         } catch (final ClientProtocolException e) {
             throw new InspectionException(
                 "Static service error when sending badge info.",
